@@ -38,7 +38,7 @@ public class Sensor {
 
     private LocalDateTime updatedAt;
 
-    private Long plantation_id;
+    private Plantacion plantation;
 
     @PrePersist
     protected void onCreate() {

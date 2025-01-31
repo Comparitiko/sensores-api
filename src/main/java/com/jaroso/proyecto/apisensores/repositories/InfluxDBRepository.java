@@ -1,4 +1,4 @@
-package repositories;
+package com.jaroso.proyecto.apisensores.repositories;
 
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.WriteApiBlocking;

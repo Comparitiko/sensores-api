@@ -1,10 +1,12 @@
-package services;
+package com.jaroso.proyecto.apisensores.services;
 
 import com.influxdb.query.FluxTable;
-import repositories.InfluxDBRepository;
+import com.jaroso.proyecto.apisensores.repositories.InfluxDBRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class SensorService {
     private final InfluxDBRepository influxDBRepository;
 

@@ -36,8 +36,8 @@ public class SensorServiceImpl implements SensorService {
         Sensor sensorByLocation = sensorRepository.findByLocation(sensor.getLocation());
         if (sensorByLocation != null) {
             throw new ResponseStatusException(
-              HttpStatus.NOT_FOUND,
-              "No se encontraron sensores"
+              HttpStatus.BAD_REQUEST,
+              "Sensor already exists in that location"
             );
         }
 
@@ -49,15 +49,16 @@ public class SensorServiceImpl implements SensorService {
             sensor.getUnit()
         );
 
-        sensorRepository.save(sensorToSave);
-        throw new NoResourceFoundException();
-        throw new HttpClientErrorException(HttpStatusCode , String statusText, byte[] body, Charset responseCharset)
-    }
+        return sensorRepository.save(sensorToSave);
+        }
 
     @Override
     public Sensor getSensorById(Long id) {
         return sensorRepository.findById(id)
-          .orElseThrow(() -> new HttpClientErrorException(HttpStatusCode.NOT_FOUND));
+          .orElseThrow(() -> new ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            "Sensor not found"
+          ));
     }
 
     @Override

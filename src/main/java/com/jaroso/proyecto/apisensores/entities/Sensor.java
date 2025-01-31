@@ -3,6 +3,7 @@ package com.jaroso.proyecto.apisensores.entities;
 
 import com.jaroso.proyecto.apisensores.enums.SensorType;
 import com.jaroso.proyecto.apisensores.enums.Unit;
+import com.jaroso.proyecto.apisensores.entities.Plantation;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,7 +39,8 @@ public class Sensor {
 
     private LocalDateTime updatedAt;
 
-    private Long plantation_id;
+    @ManyToOne(mapedBy = "sensors")
+    private Plantation plantation;
 
     @PrePersist
     protected void onCreate() {

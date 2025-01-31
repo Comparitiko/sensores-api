@@ -6,11 +6,11 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class SensorData {
+public class SensorDataDto {
     private String sensorId;
     private double value;
 
-    public SensorData(String sensorId, double value) {
+    public SensorDataDto(String sensorId, double value) {
         this.sensorId = sensorId;
         this.value = value;
     }

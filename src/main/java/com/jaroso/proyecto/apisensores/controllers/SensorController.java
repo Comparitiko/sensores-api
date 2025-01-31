@@ -4,7 +4,7 @@ import com.influxdb.query.FluxTable;
 import com.jaroso.proyecto.apisensores.dto.SensorDataDto;
 import com.jaroso.proyecto.apisensores.dto.SensorDto;
 import com.jaroso.proyecto.apisensores.enums.SensorType;
-import com.jaroso.proyecto.apisensores.models.Sensor;
+import com.jaroso.proyecto.apisensores.entities.Sensor;
 import com.jaroso.proyecto.apisensores.services.SensorService;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,5 +59,10 @@ public class SensorController {
   @GetMapping("/{location}/data")
   public List<FluxTable> getDataByLocation(@PathVariable String location) {
     return sensorService.getDataByLocation(location);
+  }
+
+  @DeleteMapping("/{id}")
+  public void deleteSensor(@PathVariable Long id) {
+    sensorService.deleteSensorById(id);
   }
 }

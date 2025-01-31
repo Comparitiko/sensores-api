@@ -4,7 +4,7 @@ import com.influxdb.query.FluxTable;
 import com.jaroso.proyecto.apisensores.dto.SensorDataDto;
 import com.jaroso.proyecto.apisensores.dto.SensorDto;
 import com.jaroso.proyecto.apisensores.enums.SensorType;
-import com.jaroso.proyecto.apisensores.models.Sensor;
+import com.jaroso.proyecto.apisensores.entities.Sensor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,4 +18,5 @@ public interface SensorService {
   List<Sensor> getSensorsByType(SensorType sensorType);
   SensorDataDto saveDataOfSensor(Long sensorId,SensorDataDto sensorDataDto);
   List<FluxTable> getDataByLocation(String location);
+  Sensor deleteSensorById(Long id);
 }

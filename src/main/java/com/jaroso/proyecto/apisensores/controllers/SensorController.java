@@ -2,6 +2,7 @@ package com.jaroso.proyecto.apisensores.controllers;
 
 import com.influxdb.query.FluxTable;
 import com.jaroso.proyecto.apisensores.dto.SensorData;
+import com.jaroso.proyecto.apisensores.models.Sensor;
 import com.jaroso.proyecto.apisensores.services.SensorService;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,8 +37,8 @@ public class SensorController {
 
   // Get all data for a specific sensor
   @GetMapping("/{id}/data")
-  public List<FluxTable> getDataByLocation(@PathVariable String id) {
-    return sensorService.getDataByLocation(id);
+  public List<FluxTable> getDataBySensor(@PathVariable String id) {
+    return sensorService.getDataBySensor(id);
   }
 
   // Get all the sensors of a specific type
@@ -50,5 +51,11 @@ public class SensorController {
   @PostMapping("/{id}/data")
   public void saveData(SensorData sensorData) {
     sensorService.saveData(sensorData.getSensorId(), sensorData.getValue());
+  }
+
+  // Get data of a specific location
+  @GetMapping("/{location}/data")
+  public List<FluxTable> getDataByLocation(@PathVariable String location) {
+    return sensorService.getDataByLocation(location);
   }
 }

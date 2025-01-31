@@ -72,8 +72,18 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
-    public Sensor saveDataOfSensor(Long sensorId, SensorDataDto sensorDataDto) {
-        return null;
+    public SensorDataDto saveDataOfSensor(Long sensorId, SensorDataDto sensorDataDto) {
+        Sensor sensor = sensorRepository.findById(sensorId);
+
+        if (sensor == null) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Sensor not found"
+            );
+        }
+
+        influxDBRepository.saveData(sensor.getLocation(), sensorDataDto.getValue());
+        return sensorDataDto;
     }
 
     @Override

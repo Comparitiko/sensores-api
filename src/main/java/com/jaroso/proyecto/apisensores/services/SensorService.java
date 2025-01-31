@@ -16,6 +16,6 @@ public interface SensorService {
   Sensor getSensorById(Long id);
   List<FluxTable> getDataBySensor(Long id);
   List<Sensor> getSensorsByType(SensorType sensorType);
-  Sensor saveDataOfSensor(Long sensorId,SensorDataDto sensorDataDto);
+  SensorDataDto saveDataOfSensor(Long sensorId,SensorDataDto sensorDataDto);
   List<FluxTable> getDataByLocation(String location);
 }

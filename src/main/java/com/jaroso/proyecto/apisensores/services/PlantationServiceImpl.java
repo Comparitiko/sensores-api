@@ -1,6 +1,7 @@
 package com.jaroso.proyecto.apisensores.services;
 
 import com.jaroso.proyecto.apisensores.entities.Plantation;
+import com.jaroso.proyecto.apisensores.repositories.PlantationRepository;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 

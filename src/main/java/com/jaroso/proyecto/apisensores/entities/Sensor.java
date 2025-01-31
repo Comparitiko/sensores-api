@@ -1,4 +1,4 @@
-package com.jaroso.proyecto.apisensores.models;
+package com.jaroso.proyecto.apisensores.entities;
 
 
 import com.jaroso.proyecto.apisensores.enums.SensorType;
@@ -23,7 +23,7 @@ public class Sensor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private SensorType sensorType;
+    private SensorType sensor_type;
 
     private String location;
 
@@ -40,7 +40,7 @@ public class Sensor {
 
     private LocalDateTime updatedAt;
 
-
+    private Double plantation_id;
 
     @PrePersist
     protected void onCreate() {
@@ -52,6 +52,7 @@ public class Sensor {
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
 
 
 }

@@ -2,6 +2,7 @@ package com.jaroso.proyecto.apisensores.controllers;
 
 import com.influxdb.query.FluxTable;
 import com.jaroso.proyecto.apisensores.dto.SensorData;
+import com.jaroso.proyecto.apisensores.models.Sensor;
 import com.jaroso.proyecto.apisensores.services.SensorService;
 import org.springframework.web.bind.annotation.*;
 

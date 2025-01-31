@@ -1,7 +1,9 @@
 package com.jaroso.proyecto.apisensores.controllers;
 
 import com.influxdb.query.FluxTable;
-import com.jaroso.proyecto.apisensores.dto.SensorData;
+import com.jaroso.proyecto.apisensores.dto.SensorDataDto;
+import com.jaroso.proyecto.apisensores.dto.SensorDto;
+import com.jaroso.proyecto.apisensores.enums.SensorType;
 import com.jaroso.proyecto.apisensores.models.Sensor;
 import com.jaroso.proyecto.apisensores.services.SensorService;
 import org.springframework.web.bind.annotation.*;
@@ -25,32 +27,32 @@ public class SensorController {
 
   // Save a new sensor
   @PostMapping
-  public Sensor saveSensor(Sensor sensor) {
+  public Sensor saveSensor(@RequestBody SensorDto sensor) {
     return sensorService.saveSensor(sensor);
   }
 
   // Get a sensor by id
   @GetMapping("/{id}")
-  public Sensor getSensorById(@PathVariable String id) {
+  public Sensor getSensorById(@PathVariable Long id) {
     return sensorService.getSensorById(id);
   }
 
   // Get all data for a specific sensor
   @GetMapping("/{id}/data")
-  public List<FluxTable> getDataBySensor(@PathVariable String id) {
+  public List<FluxTable> getDataBySensor(@PathVariable Long id) {
     return sensorService.getDataBySensor(id);
   }
 
   // Get all the sensors of a specific type
   @GetMapping("/{type}")
-  public List<Sensor> getSensorsByType(@PathVariable String type) {
+  public List<Sensor> getSensorsByType(@PathVariable SensorType type) {
     return sensorService.getSensorsByType(type);
   }
 
   // Save data for a specific sensor
   @PostMapping("/{id}/data")
-  public void saveData(SensorData sensorData) {
-    sensorService.saveData(sensorData.getSensorId(), sensorData.getValue());
+  public void saveData(@PathVariable Long id, @RequestBody SensorDataDto sensorDataDto) {
+    sensorService.saveDataOfSensor(id, sensorDataDto);
   }
 
   // Get data of a specific location

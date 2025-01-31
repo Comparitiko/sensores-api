@@ -1,16 +1,24 @@
 package com.jaroso.proyecto.apisensores.services;
 
 import com.jaroso.proyecto.apisensores.entities.Plantation;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface PlantationService {
 
-    public Plantation getPlantation(Long id);
-    public List<Plantation> getAllPlantations();
-    public void deletePlantationById(Long id);
-    public void savePlantation(Plantation plantation);
+    List<Plantation> getAllPlantations();
 
+    Optional<Plantation> getPlantationById(@NotNull Long id);
+
+    Optional<Plantation> getPlantationByName(String name);
+
+    List<Plantation> getPlantationsByTypeOfProduction(String typeOfProduction);
+
+    Plantation savePlantation(Plantation plantation);
+
+    void deletePlantation(Long id);
 }

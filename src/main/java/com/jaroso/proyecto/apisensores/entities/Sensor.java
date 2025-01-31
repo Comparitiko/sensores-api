@@ -31,8 +31,6 @@ public class Sensor {
 
     private Double longitude;
 
-    private Double value;
-
     private Unit unit;
 
     @Column(nullable = false, updatable = false)

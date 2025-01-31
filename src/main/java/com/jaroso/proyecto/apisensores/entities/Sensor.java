@@ -1,6 +1,7 @@
 package com.jaroso.proyecto.apisensores.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jaroso.proyecto.apisensores.enums.SensorType;
 import com.jaroso.proyecto.apisensores.enums.Unit;
 import com.jaroso.proyecto.apisensores.entities.Plantation;
@@ -39,6 +40,7 @@ public class Sensor {
 
     private LocalDateTime updatedAt;
 
+    @JsonIgnore
     @ManyToOne(mapedBy = "sensors")
     private Plantation plantation;
 

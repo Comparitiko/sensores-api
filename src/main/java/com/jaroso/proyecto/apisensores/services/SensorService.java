@@ -1,6 +1,7 @@
 package com.jaroso.proyecto.apisensores.services;
 
 import com.influxdb.query.FluxTable;
+import com.jaroso.proyecto.apisensores.models.Sensor;
 import com.jaroso.proyecto.apisensores.repositories.InfluxDBRepository;
 import org.springframework.stereotype.Service;
 

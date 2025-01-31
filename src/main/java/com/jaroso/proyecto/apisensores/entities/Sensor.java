@@ -44,6 +44,18 @@ public class Sensor {
     @ManyToOne(mapedBy = "sensors")
     private Plantation plantation;
 
+    //CONSTRUCTORS
+    public Sensor(SensorType sensor_type, String location, Double latitude, Double longitude, Unit unit, Plantation plantation) {
+        this.sensor_type = sensor_type;
+        this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.unit = unit;
+        this.plantation = plantation;
+    }
+
+    //METHODS
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();

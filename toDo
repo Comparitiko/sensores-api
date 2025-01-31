@@ -1,2 +1,1 @@
-En SensorDto deberíamos de tener un atributo de plantaciónId, luego en el servicio de sensor deberíamos de tener un método,
- que reciba el id de la plantación y nos devuelva el objeto.
+En SensorDto deberíamos de tener un atributo de plantaciónId, luego en el servicio de sensor con el método de crear sensor.

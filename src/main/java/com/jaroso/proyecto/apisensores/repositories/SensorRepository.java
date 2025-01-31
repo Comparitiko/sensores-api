@@ -12,17 +12,17 @@ import java.util.List;
 
 @Repository
 public interface SensorRepository extends JpaRepository<Sensor, Long> {
-    List<Sensor> findSensorsBySensor_type(SensorType sensor_type);
+    List<Sensor> findBySensorType(SensorType sensorType);
 
-    List<Sensor> findSensorsByLocation(String location);
+    List<Sensor> findByLocation(String location);
 
-    List<Sensor> findSensorsByPlantation(Plantation plantation);
+    List<Sensor> findByPlantation(Plantation plantation);
 
-    List<Sensor> findSensorsByPlantationAndSensor_type(Plantation plantation, SensorType sensor_type);
+    List<Sensor> findByPlantationAndSensorType(Plantation plantation, SensorType sensorType);
 
-    List<Sensor> findSensorsByPlantationAndLocation(Plantation plantation, String location);
+    List<Sensor> findByPlantationAndLocation(Plantation plantation, String location);
 
-    List<Sensor> findSensorsByUnit(Unit unit);
+    List<Sensor> findByUnit(Unit unit);
 
-    List<Sensor> findSensorByCreatedAtBetween(LocalDateTime createdAtAfter, LocalDateTime createdAtBefore);
+    List<Sensor> findByCreatedAtBetween(LocalDateTime startDate, LocalDateTime endDate);
 }

@@ -1,1 +1,0 @@
-En SensorDto deberíamos de tener un atributo de plantaciónId, luego en el servicio de sensor con el método de crear sensor.

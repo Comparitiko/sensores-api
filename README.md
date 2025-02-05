@@ -3,9 +3,6 @@
 </div>
 
 ## Cosas que fixear
-
-- En la entidad de Plantación hay que añadir la relación de sensores.
-
 - En la entidad de Sensor hay que añadir la relación de plantación.
 
 - En la entidad de Sensor hay que cambiar el atributo sensor_type a sensorType por temas de seguir un estilo de código.

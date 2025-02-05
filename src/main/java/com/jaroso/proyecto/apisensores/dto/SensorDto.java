@@ -13,12 +13,23 @@ public class SensorDto {
   private Double latitude;
   private Double longitude;
   private Unit unit;
+  private Long plantationId;
 
-  public SensorDto(SensorType sensorType, String location, Double latitude, Double longitude, Unit unit) {
+  public SensorDto(
+    SensorType sensorType,
+    String location,
+    Double latitude,
+    Double longitude,
+    Unit unit,
+    Long plantationId
+  ) {
     this.sensorType = sensorType;
     this.location = location;
     this.latitude = latitude;
     this.longitude = longitude;
     this.unit = unit;
+    this.plantationId = plantationId;
   }
+
+
 }

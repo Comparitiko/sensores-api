@@ -4,8 +4,6 @@
 
 ## Cosas que fixear
 
-- En SensorDto deberíamos de tener un atributo de plantaciónId, y añadir a la entidad de Sensor la plantacion buscando el id de la plantación en la base de datos.
-
 - En la entidad de Plantación hay que añadir la relación de sensores.
 
 - En la entidad de Sensor hay que añadir la relación de plantación.

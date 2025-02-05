@@ -5,6 +5,7 @@ import com.influxdb.client.WriteApiBlocking;
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
 import com.influxdb.query.FluxTable;
+import com.jaroso.proyecto.apisensores.enums.SensorType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -27,11 +28,11 @@ public class InfluxDBRepository {
     }
 
     // Método para escribir datos en InfluxDB
-    public void saveData(String location, double value) {
+    public void saveData(String location, double value, SensorType sensorType) {
         WriteApiBlocking writeApi = influxDBClient.getWriteApiBlocking();
 
         //En este caso indicamos que el sensor es de temperatura
-        Point point = Point.measurement("temperature")
+        Point point = Point.measurement(sensorType.name())
                 .addTag("location", location)
                 .addField("value", value)
                 .time(Instant.now(), WritePrecision.MS);

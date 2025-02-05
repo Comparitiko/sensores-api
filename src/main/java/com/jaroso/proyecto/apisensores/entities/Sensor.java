@@ -1,8 +1,10 @@
-package com.jaroso.proyecto.apisensores.models;
+package com.jaroso.proyecto.apisensores.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jaroso.proyecto.apisensores.enums.SensorType;
 import com.jaroso.proyecto.apisensores.enums.Unit;
+import com.jaroso.proyecto.apisensores.entities.Plantation;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,15 +25,13 @@ public class Sensor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private SensorType sensorType;
+    private SensorType sensor_type;
 
     private String location;
 
     private Double latitude;
 
     private Double longitude;
-
-    private Double value;
 
     private Unit unit;
 
@@ -40,7 +40,21 @@ public class Sensor {
 
     private LocalDateTime updatedAt;
 
+    @JsonIgnore
+    @ManyToOne(mapedBy = "sensors")
+    private Plantation plantation;
 
+    //CONSTRUCTORS
+    public Sensor(SensorType sensor_type, String location, Double latitude, Double longitude, Unit unit, Plantation plantation) {
+        this.sensor_type = sensor_type;
+        this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.unit = unit;
+        this.plantation = plantation;
+    }
+
+    //METHODS
 
     @PrePersist
     protected void onCreate() {
@@ -52,6 +66,7 @@ public class Sensor {
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
 
 
 }

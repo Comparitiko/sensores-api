@@ -3,9 +3,11 @@ package com.jaroso.proyecto.apisensores.services;
 import com.influxdb.query.FluxTable;
 import com.jaroso.proyecto.apisensores.dto.SensorDataDto;
 import com.jaroso.proyecto.apisensores.dto.SensorDto;
+import com.jaroso.proyecto.apisensores.entities.Plantation;
 import com.jaroso.proyecto.apisensores.enums.SensorType;
 import com.jaroso.proyecto.apisensores.entities.Sensor;
 import com.jaroso.proyecto.apisensores.repositories.InfluxDBRepository;
+import com.jaroso.proyecto.apisensores.repositories.PlantationRepository;
 import com.jaroso.proyecto.apisensores.repositories.SensorRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,10 +19,12 @@ import java.util.List;
 public class SensorServiceImpl implements SensorService {
     private final InfluxDBRepository influxDBRepository;
     private final SensorRepository sensorRepository;
+    private final PlantationRepository plantationRepository;
 
-    public SensorServiceImpl(InfluxDBRepository influxDBRepository, SensorRepository sensorRepository) {
+    public SensorServiceImpl(InfluxDBRepository influxDBRepository, SensorRepository sensorRepository, PlantationRepository plantationRepository) {
         this.influxDBRepository = influxDBRepository;
         this.sensorRepository = sensorRepository;
+        this.plantationRepository = plantationRepository;
     }
 
     @Override
@@ -38,12 +42,19 @@ public class SensorServiceImpl implements SensorService {
             );
         }
 
+        Plantation sensorPlantation = plantationRepository.findById(sensor.getPlantationId())
+          .orElseThrow(() -> new ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            "Plantation not found"
+          ));
+
         Sensor sensorToSave = new Sensor(
             sensor.getSensorType(),
             sensor.getLocation(),
             sensor.getLatitude(),
             sensor.getLongitude(),
-            sensor.getUnit()
+            sensor.getUnit(),
+            sensorPlantation
         );
 
         return sensorRepository.save(sensorToSave);

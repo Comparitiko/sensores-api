@@ -25,7 +25,7 @@ public class Sensor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private SensorType sensor_type;
+    private SensorType sensorType;
 
     private String location;
 
@@ -41,12 +41,12 @@ public class Sensor {
     private LocalDateTime updatedAt;
 
     @JsonIgnore
-    @ManyToOne(mapedBy = "sensors")
+    @ManyToOne(mappedBy = "sensors")
     private Plantation plantation;
 
     //CONSTRUCTORS
-    public Sensor(SensorType sensor_type, String location, Double latitude, Double longitude, Unit unit, Plantation plantation) {
-        this.sensor_type = sensor_type;
+    public Sensor(SensorType sensorType, String location, Double latitude, Double longitude, Unit unit, Plantation plantation) {
+        this.sensorType = sensorType;
         this.location = location;
         this.latitude = latitude;
         this.longitude = longitude;

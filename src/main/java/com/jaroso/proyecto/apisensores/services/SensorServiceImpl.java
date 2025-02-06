@@ -1,8 +1,8 @@
 package com.jaroso.proyecto.apisensores.services;
 
 import com.influxdb.query.FluxTable;
-import com.jaroso.proyecto.apisensores.dto.SensorDataDto;
-import com.jaroso.proyecto.apisensores.dto.SensorDto;
+import com.jaroso.proyecto.apisensores.dto.SensorDataDTO;
+import com.jaroso.proyecto.apisensores.dto.SensorDTO;
 import com.jaroso.proyecto.apisensores.entities.Plantation;
 import com.jaroso.proyecto.apisensores.enums.SensorType;
 import com.jaroso.proyecto.apisensores.entities.Sensor;
@@ -33,7 +33,7 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
-    public Sensor saveSensor(SensorDto sensor) {
+    public Sensor saveSensor(SensorDTO sensor) {
         Sensor sensorByLocation = sensorRepository.findSensorByLocation(sensor.getLocation()).orElse(null);
         if (sensorByLocation != null) {
             throw new ResponseStatusException(
@@ -91,7 +91,7 @@ public class SensorServiceImpl implements SensorService {
 
     // Save data of a specific sensor
     @Override
-    public SensorDataDto saveDataOfSensor(Long sensorId, SensorDataDto sensorDataDto) {
+    public SensorDataDTO saveDataOfSensor(Long sensorId, SensorDataDTO sensorDataDto) {
         Sensor sensor = sensorRepository.findById(sensorId).orElseThrow(
           () -> new ResponseStatusException(
             HttpStatus.NOT_FOUND,

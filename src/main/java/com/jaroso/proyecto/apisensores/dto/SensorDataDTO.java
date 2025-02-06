@@ -7,12 +7,12 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class SensorDataDto {
+public class SensorDataDTO {
     @JsonProperty("sensor_id")
     private String sensorId;
     private double value;
 
-    public SensorDataDto(String sensorId, double value) {
+    public SensorDataDTO(String sensorId, double value) {
         this.sensorId = sensorId;
         this.value = value;
     }

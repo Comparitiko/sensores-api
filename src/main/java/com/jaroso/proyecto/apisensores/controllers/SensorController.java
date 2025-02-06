@@ -1,8 +1,8 @@
 package com.jaroso.proyecto.apisensores.controllers;
 
 import com.influxdb.query.FluxTable;
-import com.jaroso.proyecto.apisensores.dto.SensorDataDto;
-import com.jaroso.proyecto.apisensores.dto.SensorDto;
+import com.jaroso.proyecto.apisensores.dto.SensorDataDTO;
+import com.jaroso.proyecto.apisensores.dto.SensorDTO;
 import com.jaroso.proyecto.apisensores.enums.SensorType;
 import com.jaroso.proyecto.apisensores.entities.Sensor;
 import com.jaroso.proyecto.apisensores.services.SensorService;
@@ -27,7 +27,7 @@ public class SensorController {
 
   // Save a new sensor
   @PostMapping
-  public Sensor saveSensor(@RequestBody SensorDto sensor) {
+  public Sensor saveSensor(@RequestBody SensorDTO sensor) {
     return sensorService.saveSensor(sensor);
   }
 
@@ -51,7 +51,7 @@ public class SensorController {
 
   // Save data for a specific sensor
   @PostMapping("/{id}/data")
-  public void saveData(@PathVariable Long id, @RequestBody SensorDataDto sensorDataDto) {
+  public void saveData(@PathVariable Long id, @RequestBody SensorDataDTO sensorDataDto) {
     sensorService.saveDataOfSensor(id, sensorDataDto);
   }
 

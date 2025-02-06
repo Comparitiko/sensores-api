@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SensorDto {
+public class SensorDTO {
   private SensorType sensorType;
   private String location;
   private Double latitude;
@@ -16,7 +16,7 @@ public class SensorDto {
   private Unit unit;
   private Long plantationId;
 
-  public SensorDto(
+  public SensorDTO(
     @JsonProperty("sensor_type")
     SensorType sensorType,
 

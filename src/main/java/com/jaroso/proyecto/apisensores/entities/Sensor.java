@@ -41,7 +41,7 @@ public class Sensor {
     private LocalDateTime updatedAt;
 
     @JsonIgnore
-    @ManyToOne(mappedBy = "sensors")
+    @ManyToOne()
     private Plantation plantation;
 
     //CONSTRUCTORS

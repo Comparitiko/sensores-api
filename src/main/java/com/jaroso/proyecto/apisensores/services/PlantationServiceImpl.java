@@ -34,7 +34,7 @@ public class PlantationServiceImpl implements PlantationService {
 
     @Override
     public List<Plantation> getPlantationsByTypeOfProduction(String typeOfProduction) {
-        return plantationRepository.findByTypeOfProduction(typeOfProduction);
+        return plantationRepository.findByPlantationType(typeOfProduction);
     }
 
     @Override

@@ -12,9 +12,9 @@ import java.util.Optional;
 public interface PlantationRepository extends JpaRepository<Plantation, Long> {
 
     /*Método para buscar por tipo de producción*/
-    List<Plantation> findByTypeOfProduction(String typeOfProduction);
+    List<Plantation> findByPlantationType(String plantationType);
 
-    List<Plantation> findByUserId(Long userId);
+    Optional<Plantation> findPlantationById(Long userId);
 
     Optional<Plantation> findByName(String name);
 

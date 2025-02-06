@@ -22,8 +22,11 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 public class SecurityConfig {
 
-  @Autowired
-  private JwtFilter jwtFilter;
+  private final JwtFilter jwtFilter;
+
+  public SecurityConfig(JwtFilter jwtFilter) {
+    this.jwtFilter = jwtFilter;
+  }
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

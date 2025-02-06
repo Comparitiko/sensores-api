@@ -26,7 +26,7 @@ public class JwtFilter extends OncePerRequestFilter {
     this.userDetailsService = userDetailsService;
   }
 
-  private static final String EXCLUDED_AUTH_PATH = "/api/auth/";
+  private static final String EXCLUDED_AUTH_PATH = "/api/auth";
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws ServletException, IOException {

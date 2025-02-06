@@ -12,9 +12,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/auth")
 public class UserController {
 
   private final UserService userService;
@@ -27,12 +29,12 @@ public class UserController {
     this.authManager = authManager;
   }
 
-  @PostMapping("/auth/register")
+  @PostMapping("/register")
   public User save(@RequestBody UserRegisterDTO userDTO){
     return this.userService.save(userDTO);
   }
 
-  @PostMapping("/auth/login")
+  @PostMapping("/login")
   public LoginResponse login(@RequestBody LoginRequest loginDTO){
 
     Authentication authDTO = new UsernamePasswordAuthenticationToken(loginDTO.username(), loginDTO.password());

@@ -32,8 +32,7 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
       .authorizeHttpRequests((authz) -> authz
-        .requestMatchers("/auth/register").permitAll()
-        .requestMatchers("/auth/login").permitAll()
+        .requestMatchers("/api/auth/**").permitAll()
         .requestMatchers("/api/data/**").permitAll()  //No me va
         .anyRequest().authenticated()
       )

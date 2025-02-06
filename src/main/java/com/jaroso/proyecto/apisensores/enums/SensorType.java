@@ -1,7 +1,7 @@
 package com.jaroso.proyecto.apisensores.enums;
 
 public enum SensorType {
-    TEMERATURE,
+    TEMPERATURE,
     HUMIDITY,
     PRESSURE,
 }

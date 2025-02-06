@@ -25,8 +25,7 @@ public class JwtFilter extends OncePerRequestFilter {
     this.userDetailsService = userDetailsService;
   }
 
-  private static final String EXCLUDED_PATH_PREFIX = "/auth/";
-  private static final String EXCLUDED_PATH_INFLUX = "/api/data";
+  private static final String EXCLUDED_AUTH_PATH = "/api/auth/";
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -34,7 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
     String requestPath = request.getRequestURI();
 
     // Si la ruta empieza por "/auth/", ignoramos la autenticación
-    if (requestPath.startsWith(EXCLUDED_PATH_PREFIX) || requestPath.startsWith(EXCLUDED_PATH_INFLUX)) {
+    if (requestPath.startsWith(EXCLUDED_AUTH_PATH)) {
       filterChain.doFilter(request, response);
       return;
     }

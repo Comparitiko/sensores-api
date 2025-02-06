@@ -1,5 +1,6 @@
 package com.jaroso.proyecto.apisensores.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jaroso.proyecto.apisensores.enums.SensorType;
 import com.jaroso.proyecto.apisensores.enums.Unit;
 import lombok.Getter;
@@ -16,11 +17,18 @@ public class SensorDto {
   private Long plantationId;
 
   public SensorDto(
+    @JsonProperty("sensor_type")
     SensorType sensorType,
+
     String location,
+
     Double latitude,
+
     Double longitude,
+
     Unit unit,
+
+    @JsonProperty("plantation_id")
     Long plantationId
   ) {
     this.sensorType = sensorType;

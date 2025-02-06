@@ -34,7 +34,7 @@ public class SensorServiceImpl implements SensorService {
 
     @Override
     public Sensor saveSensor(SensorDto sensor) {
-        Sensor sensorByLocation = sensorRepository.findSensorByLocation(sensor.getLocation());
+        Sensor sensorByLocation = sensorRepository.findSensorByLocation(sensor.getLocation()).orElse(null);
         if (sensorByLocation != null) {
             throw new ResponseStatusException(
               HttpStatus.BAD_REQUEST,
@@ -99,7 +99,7 @@ public class SensorServiceImpl implements SensorService {
           )
         );
 
-        influxDBRepository.saveData(sensor.getLocation(), sensorDataDto.getValue(), sensor.getSensor_type());
+        influxDBRepository.saveData(sensor.getLocation(), sensorDataDto.getValue(), sensor.getSensorType());
         return sensorDataDto;
     }
 

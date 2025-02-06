@@ -9,12 +9,13 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SensorRepository extends JpaRepository<Sensor, Long> {
     List<Sensor> findBySensorType(SensorType sensorType);
 
-    List<Sensor> findByLocation(String location);
+    Optional<Sensor> findSensorByLocation(String location);
 
     List<Sensor> findByPlantation(Plantation plantation);
 

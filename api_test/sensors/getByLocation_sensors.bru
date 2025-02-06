@@ -1,0 +1,11 @@
+meta {
+  name: getByLocation_sensors
+  type: http
+  seq: 5
+}
+
+get {
+  url: http://localhost:8080/api/sensors/{location}/data
+  body: none
+  auth: none
+}

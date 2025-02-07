@@ -24,13 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
   private final UserService userService;
-  private final JwtUtil jwtUtil;
-  private final AuthenticationManager authManager;
 
   public UserController(UserService userService, JwtUtil jwtUtil, AuthenticationManager authManager) {
     this.userService = userService;
-    this.jwtUtil = jwtUtil;
-    this.authManager = authManager;
   }
 
   @PostMapping("/register")
@@ -40,36 +36,6 @@ public class UserController {
 
   @PostMapping("/login")
   public ResponseEntity<?> login(@RequestBody LoginRequest loginDTO){
-
-    try {
-
-    Authentication authDTO = new UsernamePasswordAuthenticationToken(
-            loginDTO.username(),
-            loginDTO.password()
-    );
-
-    // Autenticar usuario
-    Authentication authentication = this.authManager.authenticate(authDTO);
-
-    // Obtener los detalles del usuario autenticado
-      User usuario = (User) authentication.getPrincipal();
-
-    // Crear token JWT
-    String token = this.jwtUtil.generateToken(authentication);
-
-      // Devolver respuesta con el token y roles
-      return ResponseEntity.ok(new LoginResponse(
-              usuario.getUsername(),
-              usuario.getAuthorities().stream()
-                      .map(GrantedAuthority::getAuthority)
-                      .toList(),
-              token
-      ));
-
-    } catch (UsernameNotFoundException e) {
-      return Response.newResponse("Username or password invalid", HttpStatus.BAD_REQUEST);
-    }catch (Exception e) {
-      return Response.newResponse("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return this.userService.login(loginDTO);
   }
 }

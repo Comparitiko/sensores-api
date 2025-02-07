@@ -1,5 +1,6 @@
 package com.jaroso.proyecto.apisensores.security;
 
+import com.jaroso.proyecto.apisensores.repositories.UserRepository;
 import com.jaroso.proyecto.apisensores.services.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,15 +10,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
 
-  private final UserService userService;
+  private final UserRepository userRepository;
 
-  public UserDetailServiceImpl(UserService userService) {
-    this.userService = userService;
+  public UserDetailServiceImpl(UserRepository userRepository) {
+    this.userRepository = userRepository;
   }
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    return this.userService.findByUsername(username).orElseThrow(
+    return this.userRepository.findUserByUsername(username).orElseThrow(
       () -> new UsernameNotFoundException(username + "not found")
     );
 

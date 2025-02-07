@@ -29,7 +29,4 @@ public class PlantationDTO {
 
     @JsonProperty("plantation_type")
     private String plantationType;
-
-    private List<Sensor> sensors;
-
 }

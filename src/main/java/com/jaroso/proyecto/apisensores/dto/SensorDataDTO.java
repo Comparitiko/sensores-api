@@ -9,10 +9,10 @@ import lombok.Setter;
 @Getter
 public class SensorDataDTO {
     @JsonProperty("sensor_id")
-    private String sensorId;
+    private Long sensorId;
     private double value;
 
-    public SensorDataDTO(String sensorId, double value) {
+    public SensorDataDTO(Long sensorId, double value) {
         this.sensorId = sensorId;
         this.value = value;
     }

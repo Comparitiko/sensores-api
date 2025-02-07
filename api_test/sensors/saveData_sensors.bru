@@ -5,7 +5,14 @@ meta {
 }
 
 post {
-  url: {{HOST_URL}}/sensors/{id}/data
-  body: none
+  url: {{HOST_URL}}/sensors/data/1
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "sensor_id": 1,
+    "value": 22.5
+  }
 }

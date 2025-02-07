@@ -124,6 +124,7 @@ public class SensorServiceImpl implements SensorService {
         }
 
         influxDBRepository.saveData(sensor.get().getLocation(), sensorDataDto.getValue(), sensor.get().getSensorType());
+
         return ResponseEntity.ok(sensorDataDto);
     }
 

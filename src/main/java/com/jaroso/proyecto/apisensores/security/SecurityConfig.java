@@ -25,6 +25,7 @@ public class SecurityConfig {
     http
       .authorizeHttpRequests((authz) -> authz
         .requestMatchers("/api/auth/**").permitAll()
+        .requestMatchers("/api/sensors/data/**").permitAll()
         .anyRequest().authenticated()
       )
       .csrf(AbstractHttpConfigurer::disable)

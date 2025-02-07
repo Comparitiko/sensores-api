@@ -37,6 +37,7 @@ public class SensorController {
   // Get a sensor by id
   @GetMapping("/{id}")
   public ResponseEntity<?> getSensorById(@PathVariable Long id) {
+    System.out.println("asd");
     return sensorService.getSensorById(id);
   }
 
@@ -47,20 +48,20 @@ public class SensorController {
   }
 
   // Get all the sensors of a specific type
-  @GetMapping("/{type}")
+  @GetMapping("/type/{type}")
   public ResponseEntity<?> getSensorsByType(@PathVariable SensorType type) {
-    return ResponseEntity.ok(sensorService.getSensorsByType(type));
+    return sensorService.getSensorsByType(type);
   }
 
   // Save data for a specific sensor
-  @PostMapping("/{id}/data")
+  @PostMapping("/data/{id}")
   public ResponseEntity<?> saveData(@PathVariable Long id, @RequestBody SensorDataDTO sensorDataDto) {
-    sensorService.saveDataOfSensor(id, sensorDataDto);
-    return ResponseEntity.ok(sensorDataDto);
+    System.out.println("asd");
+    return sensorService.saveDataOfSensor(id, sensorDataDto);
   }
 
   // Get data of a specific location
-  @GetMapping("/{location}/data")
+  @GetMapping("/data/{location}")
   public ResponseEntity<?> getDataByLocation(@PathVariable String location) {
     return ResponseEntity.ok(sensorService.getDataByLocation(location));
   }

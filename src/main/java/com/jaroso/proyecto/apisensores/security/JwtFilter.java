@@ -27,6 +27,7 @@ public class JwtFilter extends OncePerRequestFilter {
   }
 
   private static final String EXCLUDED_AUTH_PATH = "/api/auth";
+  private static final String EXCLUDED_SENSOR_DATA_PATH = "/api/sensors/data";
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws ServletException, IOException {
@@ -34,7 +35,8 @@ public class JwtFilter extends OncePerRequestFilter {
     String requestPath = request.getRequestURI();
 
     // Si la ruta empieza por "/api/auth/", ignoramos la autenticación
-    if (requestPath.startsWith(EXCLUDED_AUTH_PATH)) {
+    if (requestPath.startsWith(EXCLUDED_AUTH_PATH) ||
+      requestPath.startsWith(EXCLUDED_SENSOR_DATA_PATH)) {
       filterChain.doFilter(request, response);
       return;
     }

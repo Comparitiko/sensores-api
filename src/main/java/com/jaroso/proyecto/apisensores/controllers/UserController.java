@@ -50,20 +50,17 @@ public class UserController {
 
     // Autenticar usuario
     Authentication authentication = this.authManager.authenticate(authDTO);
-      System.out.print("entra");
 
     // Obtener los detalles del usuario autenticado
-    org.springframework.security.core.userdetails.User userdetails =
-            (org.springframework.security.core.userdetails.User)
-            authentication.getPrincipal();
+      User usuario = (User) authentication.getPrincipal();
 
     // Crear token JWT
     String token = this.jwtUtil.generateToken(authentication);
 
       // Devolver respuesta con el token y roles
       return ResponseEntity.ok(new LoginResponse(
-              userdetails.getUsername(),
-              userdetails.getAuthorities().stream()
+              usuario.getUsername(),
+              usuario.getAuthorities().stream()
                       .map(GrantedAuthority::getAuthority)
                       .toList(),
               token
@@ -72,7 +69,6 @@ public class UserController {
     } catch (UsernameNotFoundException e) {
       return Response.newResponse("Username or password invalid", HttpStatus.BAD_REQUEST);
     }catch (Exception e) {
-      System.out.println(e);
       return Response.newResponse("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }

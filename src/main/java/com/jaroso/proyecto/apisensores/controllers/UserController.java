@@ -6,6 +6,8 @@ import com.jaroso.proyecto.apisensores.dto.UserRegisterDTO;
 import com.jaroso.proyecto.apisensores.entities.User;
 import com.jaroso.proyecto.apisensores.security.JwtUtil;
 import com.jaroso.proyecto.apisensores.services.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,7 +32,7 @@ public class UserController {
   }
 
   @PostMapping("/register")
-  public User save(@RequestBody UserRegisterDTO userDTO){
+  public ResponseEntity<?> save(@RequestBody UserRegisterDTO userDTO){
     return this.userService.save(userDTO);
   }
 

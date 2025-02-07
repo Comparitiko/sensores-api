@@ -7,6 +7,7 @@ import com.jaroso.proyecto.apisensores.entities.User;
 import com.jaroso.proyecto.apisensores.repositories.UserRepository;
 import com.jaroso.proyecto.apisensores.responses.Response;
 import com.jaroso.proyecto.apisensores.security.JwtUtil;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -80,13 +81,18 @@ public class UserServiceImpl implements UserService {
   @Override
   public ResponseEntity<?> save(UserRegisterDTO userRegisterDTO) {
     // Check if user already exists
-    Optional<User> user = this.userRepository.findUserByUsernameOrEmail(
+    Optional<User> userDB = this.userRepository.findUserByUsernameOrEmail(
       userRegisterDTO.getUsername(),
       userRegisterDTO.getEmail()
     );
 
-    if (user.isPresent()) {
+    if (userDB.isPresent()) {
       return Response.newResponse("User already exist", HttpStatus.BAD_REQUEST);
+    }
+
+    // Check if passwords match
+    if (!userRegisterDTO.getPassword().equals(userRegisterDTO.getConfirmPassword())) {
+      return Response.newResponse("Passwords do not match", HttpStatus.BAD_REQUEST);
     }
 
     // Create new user
@@ -95,37 +101,26 @@ public class UserServiceImpl implements UserService {
     newUser.setEmail(userRegisterDTO.getEmail());
     newUser.setPassword(this.passwordEncoder.encode(userRegisterDTO.getPassword()));
 
-    this.userRepository.save(newUser);
+    // Save user to database catching OptimisticLockingFailureException and any other exception
+    try {
+      this.userRepository.save(newUser);
 
-    return ResponseEntity.ok("User created successfully");
+      // Create the token
+      Authentication authDTO = new UsernamePasswordAuthenticationToken(newUser.getUsername(), newUser.getPassword());
 
-//    // Check if passwords match
-//    if (!userRegisterDTO.getPassword().equals(userRegisterDTO.getConfirmPassword())) {
-//      throw new ResponseStatusException(
-//        HttpStatus.BAD_REQUEST,
-//        "Passwords do not match"
-//      );
-//    }
-//
-//    // Create new user
-//    User newUser = new User();
-//    newUser.setUsername(userRegisterDTO.getUsername());
-//    newUser.setEmail(userRegisterDTO.getEmail());
-//    newUser.setPassword(this.passwordEncoder.encode(userRegisterDTO.getPassword()));
-//
-//    // Save user to database catching OptimisticLockingFailureException and any other exception
-//    try {
-//      return this.userRepository.save(newUser);
-//    } catch (OptimisticLockingFailureException e) {
-//      throw new ResponseStatusException(
-//        HttpStatus.BAD_REQUEST,
-//        "User already exist"
-//      );
-//    } catch (Exception e) {
-//      throw new ResponseStatusException(
-//        HttpStatus.INTERNAL_SERVER_ERROR,
-//        "Error saving user"
-//      );
-//    }
+      //Este método es el que llama al AuthenticationManager correspondiente para ver si la autenticación es correcta
+      Authentication authentication = this.authManager.authenticate(authDTO);
+
+      //El método nos devuelve un User (con UserDetailService) para con esos datos generar el token
+      User user = (User) authentication.getPrincipal();
+
+      String token = this.jwtUtil.generateToken(authentication);
+    } catch (OptimisticLockingFailureException e) {
+      return Response.newResponse("User already exists", HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      return Response.newResponse("Error saving user, try again later", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    return Response.newResponse("Error saving user, try again later", HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }

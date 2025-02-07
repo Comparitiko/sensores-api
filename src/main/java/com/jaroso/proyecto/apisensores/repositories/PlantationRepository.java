@@ -16,7 +16,7 @@ public interface PlantationRepository extends JpaRepository<Plantation, Long> {
 
     Optional<Plantation> findPlantationByName(String name);
 
-    Optional<Plantation> findByCoordinates(String coordinates);
+    Optional<Plantation> findByCoordinatesOrName(String coordinates, String name);
 
     @NotNull Optional<Plantation> findById(@NotNull Long id);
 

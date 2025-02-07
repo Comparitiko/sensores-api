@@ -27,9 +27,9 @@ public class PlantationDTO {
 
     private String coordinates;
 
+    @JsonProperty("plantation_type")
     private String plantationType;
 
-    @JsonProperty("sensors")
     private List<Sensor> sensors;
 
 }

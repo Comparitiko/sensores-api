@@ -1,5 +1,6 @@
 package com.jaroso.proyecto.apisensores.services;
 
+import com.jaroso.proyecto.apisensores.dto.PlantationDTO;
 import com.jaroso.proyecto.apisensores.entities.Plantation;
 import com.jaroso.proyecto.apisensores.repositories.PlantationRepository;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +39,17 @@ public class PlantationServiceImpl implements PlantationService {
     }
 
     @Override
-    public Plantation savePlantation(Plantation plantation) {
+    public Plantation savePlantation(PlantationDTO plantationDTO) {
+
+        Plantation plantation = new Plantation();
+        plantation.setName(plantationDTO.getName());
+        plantation.setUbication(plantationDTO.getName());
+        plantation.setCountry(plantationDTO.getCountry());
+        plantation.setProvince(plantationDTO.getProvince());
+        plantation.setCity(plantationDTO.getCity());
+        plantation.setCoordinates(plantationDTO.getCoordinates());
+        plantation.setPlantationType(plantationDTO.getPlantationType());
+
         return plantationRepository.save(plantation);
     }
 

@@ -33,7 +33,7 @@ public class UserController {
   }
 
   @PostMapping("/register")
-  public User save(@RequestBody UserRegisterDTO userDTO){
+  public ResponseEntity<?> save(@RequestBody UserRegisterDTO userDTO){
     return this.userService.save(userDTO);
   }
 

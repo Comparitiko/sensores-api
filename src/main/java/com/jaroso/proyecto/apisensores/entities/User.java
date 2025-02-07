@@ -41,7 +41,7 @@ public class User implements UserDetails {
     private List<UserAuthority> authorities = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Plantation> plantaciones = new ArrayList<>();
+    private List<Plantation> plantations = new ArrayList<>();
 
     //------Constructor------
     public User(String username, String password, String email, List<UserAuthority> authorities) {

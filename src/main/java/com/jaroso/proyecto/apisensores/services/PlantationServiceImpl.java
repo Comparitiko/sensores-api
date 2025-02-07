@@ -59,9 +59,13 @@ public class PlantationServiceImpl implements PlantationService {
     public ResponseEntity<?> savePlantation(PlantationDTO plantationDTO) {
 
         Optional<Plantation> checkPlantation =
-          plantationRepository.findByCoordinatesOrName(plantationDTO.getCoordinates(), plantationDTO.getName());
+          plantationRepository.findByCoordinatesOrName(
+            plantationDTO.getCoordinates(),
+            plantationDTO.getName()
+          );
+
         if(checkPlantation.isPresent()){
-            Response.newResponse("Plantation already exists", HttpStatus.BAD_REQUEST);
+            return Response.newResponse("Plantation already exists", HttpStatus.BAD_REQUEST);
         }
 
         Plantation plantation = new Plantation();

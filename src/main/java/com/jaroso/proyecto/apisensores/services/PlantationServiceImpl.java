@@ -80,7 +80,7 @@ public class PlantationServiceImpl implements PlantationService {
         try {
             plantationRepository.save(plantation);
 
-            return ResponseEntity.ok(plantation);
+            return ResponseEntity.status(HttpStatus.CREATED).body(plantation);
         } catch (OptimisticLockingFailureException e) {
             return Response.newResponse("Plantation already exists", HttpStatus.BAD_REQUEST);
         } catch (Exception e) {

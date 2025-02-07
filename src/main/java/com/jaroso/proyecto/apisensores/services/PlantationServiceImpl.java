@@ -41,7 +41,7 @@ public class PlantationServiceImpl implements PlantationService {
 
     @Override
     public ResponseEntity<?> getPlantationByName(String name) {
-        Plantation plantation = plantationRepository.findByName(name).orElse(null);
+        Plantation plantation = plantationRepository.findPlantationByName(name).orElse(null);
 
         if (plantation == null) {
             return Response.newResponse("Plantation not found", HttpStatus.NOT_FOUND);

@@ -20,6 +20,7 @@ public class Plantation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     private String ubication;
@@ -30,6 +31,7 @@ public class Plantation {
 
     private String city;
 
+    @Column(unique = true)
     private String coordinates;
 
     @Column(name = "plantation_type")

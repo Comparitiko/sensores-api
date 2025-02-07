@@ -5,7 +5,19 @@ meta {
 }
 
 post {
-  url: {{HOST_URL}}/api/plantations
-  body: none
+  url: {{HOST_URL}}/plantations
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "name": "Plantacion1",
+    "ubication": "Ubicacion1",
+    "country": "España",
+    "province": "Almeria",
+    "city": "Cuevas del Almanzora",
+    "coordinates": "37.296944°, -1.879722°",
+    "plantation_type": "Lechugas"
+  }
 }

@@ -14,9 +14,7 @@ public interface PlantationRepository extends JpaRepository<Plantation, Long> {
     /*Método para buscar por tipo de producción*/
     List<Plantation> findByPlantationType(String plantationType);
 
-    Optional<Plantation> findPlantationById(Long userId);
-
-    Optional<Plantation> findByName(String name);
+    Optional<Plantation> findPlantationByName(String name);
 
     Optional<Plantation> findByCoordinates(String coordinates);
 

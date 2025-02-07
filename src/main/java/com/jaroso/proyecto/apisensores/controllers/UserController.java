@@ -4,6 +4,7 @@ import com.jaroso.proyecto.apisensores.dto.LoginRequest;
 import com.jaroso.proyecto.apisensores.dto.LoginResponse;
 import com.jaroso.proyecto.apisensores.dto.UserRegisterDTO;
 import com.jaroso.proyecto.apisensores.entities.User;
+import com.jaroso.proyecto.apisensores.responses.Response;
 import com.jaroso.proyecto.apisensores.security.JwtUtil;
 import com.jaroso.proyecto.apisensores.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -49,6 +50,7 @@ public class UserController {
 
     // Autenticar usuario
     Authentication authentication = this.authManager.authenticate(authDTO);
+      System.out.print("entra");
 
     // Obtener los detalles del usuario autenticado
     org.springframework.security.core.userdetails.User userdetails =
@@ -68,9 +70,10 @@ public class UserController {
       ));
 
     } catch (UsernameNotFoundException e) {
-      return ResponseEntity.badRequest().body("Username or password invalid");
+      return Response.newResponse("Username or password invalid", HttpStatus.BAD_REQUEST);
     }catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error" + e.getMessage());
+      System.out.println(e);
+      return Response.newResponse("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

@@ -4,6 +4,7 @@ import com.jaroso.proyecto.apisensores.dto.PlantationDTO;
 import com.jaroso.proyecto.apisensores.entities.Plantation;
 import com.jaroso.proyecto.apisensores.services.PlantationService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class PlantationController {
      * @return List<Plantation>
      */
     @GetMapping
-    public List<Plantation> getAllPlantations() {
+    public ResponseEntity<?> getAllPlantations() {
         return plantationService.getAllPlantations();
     }
 
@@ -34,7 +35,7 @@ public class PlantationController {
      * @return Optional<Plantation>
      */
     @GetMapping("/{id}")
-    public Optional<Plantation> getPlantationById(@PathVariable @NotNull Long id) {
+    public ResponseEntity<?> getPlantationById(@PathVariable @NotNull Long id) {
         return plantationService.getPlantationById(id);
     }
 
@@ -44,7 +45,7 @@ public class PlantationController {
      * @return Optional<Plantation>
      */
     @GetMapping("/name/{name}")
-    public Optional<Plantation> getPlantationByName(@PathVariable String name) {
+    public ResponseEntity<?> getPlantationByName(@PathVariable String name) {
         return plantationService.getPlantationByName(name);
     }
 
@@ -54,7 +55,7 @@ public class PlantationController {
      * @return List<Plantation>
      */
     @GetMapping("/type/{typeOfProduction}")
-    public List<Plantation> getPlantationsByTypeOfProduction(@PathVariable String typeOfProduction) {
+    public ResponseEntity<?> getPlantationsByTypeOfProduction(@PathVariable String typeOfProduction) {
         return plantationService.getPlantationsByTypeOfProduction(typeOfProduction);
     }
 
@@ -64,7 +65,7 @@ public class PlantationController {
      * @return Plantation
      */
     @PostMapping
-    public Plantation savePlantation(@RequestBody PlantationDTO plantationDTO) {
+    public ResponseEntity<?> savePlantation(@RequestBody PlantationDTO plantationDTO) {
         return plantationService.savePlantation(plantationDTO);
     }
 
@@ -73,8 +74,8 @@ public class PlantationController {
      * @param id Long
      */
     @DeleteMapping("/{id}")
-    public void deletePlantation(@PathVariable @NotNull Long id) {
-        plantationService.deletePlantation(id);
+    public ResponseEntity<?> deletePlantation(@PathVariable @NotNull Long id) {
+        return plantationService.deletePlantation(id);
     }
 
 

@@ -3,8 +3,11 @@ package com.jaroso.proyecto.apisensores.services;
 import com.jaroso.proyecto.apisensores.dto.PlantationDTO;
 import com.jaroso.proyecto.apisensores.entities.Plantation;
 import com.jaroso.proyecto.apisensores.repositories.PlantationRepository;
+import com.jaroso.proyecto.apisensores.responses.Response;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -21,34 +24,43 @@ public class PlantationServiceImpl implements PlantationService {
     }
 
     @Override
-    public List<Plantation> getAllPlantations() {
-        return plantationRepository.findAll();
+    public ResponseEntity<?> getAllPlantations() {
+        return ResponseEntity.ok(plantationRepository.findAll());
     }
 
     @Override
-    public Optional<Plantation> getPlantationById(@NotNull Long id) {
-        return plantationRepository.findById(id);
+    public ResponseEntity<?> getPlantationById(@NotNull Long id) {
+        Plantation plantation = plantationRepository.findById(id).orElse(null);
+
+        if (plantation == null) {
+            return Response.newResponse("Plantation not found", HttpStatus.NOT_FOUND);
+        }
+
+        return ResponseEntity.ok(plantation);
     }
 
     @Override
-    public Optional<Plantation> getPlantationByName(String name) {
-        return plantationRepository.findByName(name);
+    public ResponseEntity<?> getPlantationByName(String name) {
+        Plantation plantation = plantationRepository.findByName(name).orElse(null);
+
+        if (plantation == null) {
+            return Response.newResponse("Plantation not found", HttpStatus.NOT_FOUND);
+        }
+
+        return ResponseEntity.ok(plantation);
     }
 
     @Override
-    public List<Plantation> getPlantationsByTypeOfProduction(String typeOfProduction) {
-        return plantationRepository.findByPlantationType(typeOfProduction);
+    public ResponseEntity<?> getPlantationsByTypeOfProduction(String typeOfProduction) {
+        return ResponseEntity.ok(plantationRepository.findByPlantationType(typeOfProduction));
     }
 
     @Override
-    public Plantation savePlantation(PlantationDTO plantationDTO) {
+    public ResponseEntity<?> savePlantation(PlantationDTO plantationDTO) {
 
         Plantation checkPlantation = plantationRepository.findByCoordinates(plantationDTO.getCoordinates()).orElse(null);
         if(checkPlantation != null){
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Plantation already exists."
-            );
+            Response.newResponse("Plantation already exists", HttpStatus.BAD_REQUEST);
         }
 
         Plantation plantation = new Plantation();
@@ -60,13 +72,26 @@ public class PlantationServiceImpl implements PlantationService {
         plantation.setCoordinates(plantationDTO.getCoordinates());
         plantation.setPlantationType(plantationDTO.getPlantationType());
 
-        return plantationRepository.save(plantation);
+        try {
+            plantationRepository.save(plantation);
+
+            return ResponseEntity.ok(plantation);
+        } catch (OptimisticLockingFailureException e) {
+            return Response.newResponse("Plantation already exists", HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return Response.newResponse("Error saving plantation, try again later", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
-    public void deletePlantation(Long id) {
+    public ResponseEntity<?> deletePlantation(Long id) {
 
-        plantationRepository.deleteById(id);
+        try {
+            plantationRepository.deleteById(id);
+            return ResponseEntity.ok("Plantation deleted successfully");
+        } catch (Exception e) {
+            return Response.newResponse("Error deleting plantation, try again later", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
     }
 }

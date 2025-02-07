@@ -2,9 +2,11 @@ package com.jaroso.proyecto.apisensores.controllers;
 
 import com.jaroso.proyecto.apisensores.dto.PlantationDTO;
 import com.jaroso.proyecto.apisensores.entities.Plantation;
+import com.jaroso.proyecto.apisensores.entities.User;
 import com.jaroso.proyecto.apisensores.services.PlantationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

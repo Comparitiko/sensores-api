@@ -44,30 +44,4 @@ public class Plantation {
     @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
-
-    //CONSTRUCTORS
-    public Plantation(String name, String ubication, String country, String province, String city,
-                      String coordinates, String plantationType, User user) {
-        this.name = name;
-        this.ubication = ubication;
-        this.country = country;
-        this.province = province;
-        this.city = city;
-        this.coordinates = coordinates;
-        this.plantationType = plantationType;
-        this.user = user;
-    }
-
-    public Plantation(Long id, String name, String ubication, String country, String province,
-                      String city, String coordinates, String plantationType, User user) {
-        this.id = id;
-        this.name = name;
-        this.ubication = ubication;
-        this.country = country;
-        this.province = province;
-        this.city = city;
-        this.coordinates = coordinates;
-        this.plantationType = plantationType;
-        this.user = user;
-    }
 }

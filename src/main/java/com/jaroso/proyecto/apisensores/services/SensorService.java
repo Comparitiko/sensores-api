@@ -3,6 +3,7 @@ package com.jaroso.proyecto.apisensores.services;
 import com.influxdb.query.FluxTable;
 import com.jaroso.proyecto.apisensores.dto.SensorDataDTO;
 import com.jaroso.proyecto.apisensores.dto.SensorDTO;
+import com.jaroso.proyecto.apisensores.entities.User;
 import com.jaroso.proyecto.apisensores.enums.SensorType;
 import com.jaroso.proyecto.apisensores.entities.Sensor;
 import org.springframework.http.ResponseEntity;

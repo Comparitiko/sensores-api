@@ -3,10 +3,12 @@ package com.jaroso.proyecto.apisensores.controllers;
 import com.influxdb.query.FluxTable;
 import com.jaroso.proyecto.apisensores.dto.SensorDataDTO;
 import com.jaroso.proyecto.apisensores.dto.SensorDTO;
+import com.jaroso.proyecto.apisensores.entities.User;
 import com.jaroso.proyecto.apisensores.enums.SensorType;
 import com.jaroso.proyecto.apisensores.entities.Sensor;
 import com.jaroso.proyecto.apisensores.services.SensorService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,19 +25,19 @@ public class SensorController {
   // Get all sensors
   @GetMapping
   public ResponseEntity<?> getSensors() {
-    return ResponseEntity.ok(sensorService.getAllSensors());
+    return sensorService.getAllSensors();
   }
 
   // Save a new sensor
   @PostMapping
   public ResponseEntity<?> saveSensor(@RequestBody SensorDTO sensor) {
-    return ResponseEntity.ok(sensorService.saveSensor(sensor));
+    return sensorService.saveSensor(sensor);
   }
 
   // Get a sensor by id
   @GetMapping("/{id}")
   public ResponseEntity<?> getSensorById(@PathVariable Long id) {
-    return ResponseEntity.ok(sensorService.getSensorById(id));
+    return sensorService.getSensorById(id);
   }
 
   // Get all data for a specific sensor

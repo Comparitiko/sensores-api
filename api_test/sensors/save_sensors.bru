@@ -6,6 +6,17 @@ meta {
 
 post {
   url: {{HOST_URL}}/sensors
-  body: none
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "location": "Cuevas",
+    "sensor_type": "TEMPERATURE",
+    "latitude": 12.2,
+    "longitude": 1.2,
+    "unit": "CELSIUS",
+    "plantation_id": 1
+  }
 }

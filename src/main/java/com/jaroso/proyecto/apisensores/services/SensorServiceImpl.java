@@ -4,18 +4,19 @@ import com.influxdb.query.FluxTable;
 import com.jaroso.proyecto.apisensores.dto.SensorDataDTO;
 import com.jaroso.proyecto.apisensores.dto.SensorDTO;
 import com.jaroso.proyecto.apisensores.entities.Plantation;
+import com.jaroso.proyecto.apisensores.entities.User;
 import com.jaroso.proyecto.apisensores.enums.SensorType;
 import com.jaroso.proyecto.apisensores.entities.Sensor;
 import com.jaroso.proyecto.apisensores.repositories.InfluxDBRepository;
 import com.jaroso.proyecto.apisensores.repositories.PlantationRepository;
 import com.jaroso.proyecto.apisensores.repositories.SensorRepository;
 import com.jaroso.proyecto.apisensores.responses.Response;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SensorServiceImpl implements SensorService {
@@ -38,17 +39,20 @@ public class SensorServiceImpl implements SensorService {
     public ResponseEntity<?> saveSensor(SensorDTO sensor) {
         Sensor sensorByLocation = sensorRepository.findSensorByLocation(sensor.getLocation()).orElse(null);
         if (sensorByLocation != null) {
-            throw new ResponseStatusException(
-              HttpStatus.BAD_REQUEST,
-              "Sensor already exists in that location"
+            return Response.newResponse(
+              "Sensor already exists in that location",
+              HttpStatus.BAD_REQUEST
             );
         }
 
-        Plantation sensorPlantation = plantationRepository.findById(sensor.getPlantationId())
-          .orElseThrow(() -> new ResponseStatusException(
-            HttpStatus.NOT_FOUND,
-            "Plantation not found"
-          ));
+        Optional<Plantation> sensorPlantation = plantationRepository.findById(sensor.getPlantationId());
+
+        if (sensorPlantation.isEmpty()) {
+            return Response.newResponse(
+              "Plantation not exist",
+              HttpStatus.BAD_REQUEST
+            );
+        }
 
         Sensor sensorToSave = new Sensor(
             sensor.getSensorType(),
@@ -56,10 +60,19 @@ public class SensorServiceImpl implements SensorService {
             sensor.getLatitude(),
             sensor.getLongitude(),
             sensor.getUnit(),
-            sensorPlantation
+            sensorPlantation.get()
         );
 
-        return ResponseEntity.ok(sensorRepository.save(sensorToSave));
+        try {
+            sensorRepository.save(sensorToSave);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(sensorToSave);
+
+        } catch (OptimisticLockingFailureException e) {
+            return Response.newResponse("Sensor already exists", HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return Response.newResponse("Error saving sensor, try again later", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -67,19 +80,15 @@ public class SensorServiceImpl implements SensorService {
      * @param id
      * @return Sensor or Response
      */
-    public Sensor sensorById(Long id) {
-        return sensorRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Sensor not found"
-                )
-        );
+    private Optional<Sensor> sensorById(Long id) {
+        return sensorRepository.findById(id);
     }
 
     @Override
     public ResponseEntity<?> getSensorById(Long id) {
-        Sensor sensor = sensorById(id);
-        if (sensor == null) {
+        Optional<Sensor> sensor = sensorById(id);
+
+        if (sensor.isEmpty()) {
             return Response.newResponse("Sensor not found", HttpStatus.NOT_FOUND);
         }
 
@@ -90,9 +99,13 @@ public class SensorServiceImpl implements SensorService {
     @Override
     public ResponseEntity<?> getDataBySensor(Long id) {
 
-        Sensor sensor = sensorById(id);
+        Optional<Sensor> sensor = sensorById(id);
 
-        return ResponseEntity.ok(influxDBRepository.getDataByLocation(sensor.getLocation()));
+        if (sensor.isEmpty()) {
+            return Response.newResponse("Sensor not found", HttpStatus.NOT_FOUND);
+        }
+
+        return ResponseEntity.ok(influxDBRepository.getDataByLocation(sensor.get().getLocation()));
     }
 
     // Get all sensors of a specific type
@@ -104,9 +117,13 @@ public class SensorServiceImpl implements SensorService {
     // Save data of a specific sensor
     @Override
     public ResponseEntity<?> saveDataOfSensor(Long sensorId, SensorDataDTO sensorDataDto) {
-        Sensor sensor = sensorById(sensorId);
+        Optional<Sensor> sensor = sensorById(sensorId);
 
-        influxDBRepository.saveData(sensor.getLocation(), sensorDataDto.getValue(), sensor.getSensorType());
+        if (sensor.isEmpty()) {
+            return Response.newResponse("Sensor not found", HttpStatus.NOT_FOUND);
+        }
+
+        influxDBRepository.saveData(sensor.get().getLocation(), sensorDataDto.getValue(), sensor.get().getSensorType());
         return ResponseEntity.ok(sensorDataDto);
     }
 

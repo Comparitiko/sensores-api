@@ -1,5 +1,6 @@
 package com.jaroso.proyecto.apisensores.controllers;
 
+import com.jaroso.proyecto.apisensores.dto.PlantationDTO;
 import com.jaroso.proyecto.apisensores.entities.Plantation;
 import com.jaroso.proyecto.apisensores.services.PlantationService;
 import org.jetbrains.annotations.NotNull;
@@ -59,12 +60,12 @@ public class PlantationController {
 
     /**
      * Save plantation
-     * @param plantation Plantation
+     * @param plantationDTO PlantationDTO
      * @return Plantation
      */
     @PostMapping
-    public Plantation savePlantation(@RequestBody Plantation plantation) {
-        return plantationService.savePlantation(plantation);
+    public Plantation savePlantation(@RequestBody PlantationDTO plantationDTO) {
+        return plantationService.savePlantation(plantationDTO);
     }
 
     /**

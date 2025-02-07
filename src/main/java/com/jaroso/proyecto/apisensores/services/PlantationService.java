@@ -1,5 +1,6 @@
 package com.jaroso.proyecto.apisensores.services;
 
+import com.jaroso.proyecto.apisensores.dto.PlantationDTO;
 import com.jaroso.proyecto.apisensores.entities.Plantation;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public interface PlantationService {
 
     List<Plantation> getPlantationsByTypeOfProduction(String typeOfProduction);
 
-    Plantation savePlantation(Plantation plantation);
+    Plantation savePlantation(PlantationDTO plantationDTO);
 
     void deletePlantation(Long id);
 }

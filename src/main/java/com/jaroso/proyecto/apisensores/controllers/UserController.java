@@ -4,6 +4,7 @@ import com.jaroso.proyecto.apisensores.dto.LoginRequest;
 import com.jaroso.proyecto.apisensores.dto.LoginResponse;
 import com.jaroso.proyecto.apisensores.dto.UserRegisterDTO;
 import com.jaroso.proyecto.apisensores.entities.User;
+import com.jaroso.proyecto.apisensores.responses.Response;
 import com.jaroso.proyecto.apisensores.security.JwtUtil;
 import com.jaroso.proyecto.apisensores.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,21 +39,41 @@ public class UserController {
   }
 
   @PostMapping("/login")
-  public LoginResponse login(@RequestBody LoginRequest loginDTO){
+  public ResponseEntity<?> login(@RequestBody LoginRequest loginDTO){
 
-    Authentication authDTO = new UsernamePasswordAuthenticationToken(loginDTO.username(), loginDTO.password());
+    try {
 
-    //Este método es el que llama al AuthenticationManager correspondiente para ver si la autenticación es correcta
+    Authentication authDTO = new UsernamePasswordAuthenticationToken(
+            loginDTO.username(),
+            loginDTO.password()
+    );
+
+    // Autenticar usuario
     Authentication authentication = this.authManager.authenticate(authDTO);
+      System.out.print("entra");
 
-    //El método nos devuelve un User (con UserDetailService) para con esos datos generar el token
-    User user = (User) authentication.getPrincipal();
+    // Obtener los detalles del usuario autenticado
+    org.springframework.security.core.userdetails.User userdetails =
+            (org.springframework.security.core.userdetails.User)
+            authentication.getPrincipal();
 
+    // Crear token JWT
     String token = this.jwtUtil.generateToken(authentication);
 
-    return new LoginResponse(user.getUsername(),
-      user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList(),
-      token);
-  }
+      // Devolver respuesta con el token y roles
+      return ResponseEntity.ok(new LoginResponse(
+              userdetails.getUsername(),
+              userdetails.getAuthorities().stream()
+                      .map(GrantedAuthority::getAuthority)
+                      .toList(),
+              token
+      ));
 
+    } catch (UsernameNotFoundException e) {
+      return Response.newResponse("Username or password invalid", HttpStatus.BAD_REQUEST);
+    }catch (Exception e) {
+      System.out.println(e);
+      return Response.newResponse("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 }

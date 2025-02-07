@@ -88,7 +88,7 @@ public class PlantationServiceImpl implements PlantationService {
 
         try {
             plantationRepository.deleteById(id);
-            return ResponseEntity.ok("Plantation deleted successfully");
+            return Response.newResponse("Plantation deleted successfully", HttpStatus.OK);
         } catch (Exception e) {
             return Response.newResponse("Error deleting plantation, try again later", HttpStatus.INTERNAL_SERVER_ERROR);
         }

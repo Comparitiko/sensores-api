@@ -105,18 +105,26 @@ public class UserServiceImpl implements UserService {
     try {
       this.userRepository.save(newUser);
 
-//      // Create the token
-//      Authentication authDTO = new UsernamePasswordAuthenticationToken(newUser.getUsername(), newUser.getPassword());
-//
-//      //Este método es el que llama al AuthenticationManager correspondiente para ver si la autenticación es correcta
-//      Authentication authentication = this.authManager.authenticate(authDTO);
-//
-//      //El método nos devuelve un User (con UserDetailService) para con esos datos generar el token
-//      User user = (User) authentication.getPrincipal();
-//
-//      String token = this.jwtUtil.generateToken(authentication);
+      // Create the token
+      Authentication authDTO = new UsernamePasswordAuthenticationToken(newUser.getUsername(), userRegisterDTO.getPassword());
 
-      return Response.newResponse("User created successfully", HttpStatus.OK);
+      // Autenticar usuario
+      Authentication authentication = this.authManager.authenticate(authDTO);
+
+      // Obtener los detalles del usuario autenticado
+      User usuario = (User) authentication.getPrincipal();
+
+      // Crear token JWT
+      String token = this.jwtUtil.generateToken(authentication);
+
+      // Devolver respuesta con el token y roles
+      return ResponseEntity.ok(new LoginResponse(
+        usuario.getUsername(),
+        usuario.getAuthorities().stream()
+          .map(GrantedAuthority::getAuthority)
+          .toList(),
+        token
+      ));
 
     } catch (OptimisticLockingFailureException e) {
       return Response.newResponse("User already exists", HttpStatus.BAD_REQUEST);

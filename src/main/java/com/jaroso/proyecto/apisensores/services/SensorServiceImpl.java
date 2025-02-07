@@ -9,7 +9,9 @@ import com.jaroso.proyecto.apisensores.entities.Sensor;
 import com.jaroso.proyecto.apisensores.repositories.InfluxDBRepository;
 import com.jaroso.proyecto.apisensores.repositories.PlantationRepository;
 import com.jaroso.proyecto.apisensores.repositories.SensorRepository;
+import com.jaroso.proyecto.apisensores.responses.Response;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -28,12 +30,12 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
-    public List<Sensor> getAllSensors() {
-        return sensorRepository.findAll();
+    public ResponseEntity<?> getAllSensors() {
+        return ResponseEntity.ok(sensorRepository.findAll());
     }
 
     @Override
-    public Sensor saveSensor(SensorDTO sensor) {
+    public ResponseEntity<?> saveSensor(SensorDTO sensor) {
         Sensor sensorByLocation = sensorRepository.findSensorByLocation(sensor.getLocation()).orElse(null);
         if (sensorByLocation != null) {
             throw new ResponseStatusException(
@@ -57,69 +59,72 @@ public class SensorServiceImpl implements SensorService {
             sensorPlantation
         );
 
-        return sensorRepository.save(sensorToSave);
-        }
+        return ResponseEntity.ok(sensorRepository.save(sensorToSave));
+    }
+
+    /**
+     * Method to search for a sensor by ID; if not found, it sends a response.
+     * @param id
+     * @return Sensor or Response
+     */
+    public Sensor sensorById(Long id) {
+        return sensorRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Sensor not found"
+                )
+        );
+    }
 
     @Override
-    public Sensor getSensorById(Long id) {
-        return sensorRepository.findById(id)
-          .orElseThrow(() -> new ResponseStatusException(
-            HttpStatus.NOT_FOUND,
-            "Sensor not found"
-          ));
+    public ResponseEntity<?> getSensorById(Long id) {
+        Sensor sensor = sensorById(id);
+        if (sensor == null) {
+            return Response.newResponse("Sensor not found", HttpStatus.NOT_FOUND);
+        }
+
+        return ResponseEntity.ok(sensor);
     }
 
     // Get sensor data from database and return values of the sensor with the location
     @Override
-    public List<FluxTable> getDataBySensor(Long id) {
+    public ResponseEntity<?> getDataBySensor(Long id) {
 
-        Sensor sensor = sensorRepository.findById(id).orElseThrow(
-          () -> new ResponseStatusException(
-            HttpStatus.NOT_FOUND,
-            "Sensor not found"
-          )
-        );
+        Sensor sensor = sensorById(id);
 
-        return influxDBRepository.getDataByLocation(sensor.getLocation());
+        return ResponseEntity.ok(influxDBRepository.getDataByLocation(sensor.getLocation()));
     }
 
     // Get all sensors of a specific type
     @Override
-    public List<Sensor> getSensorsByType(SensorType sensorType) {
-        return sensorRepository.findBySensorType(sensorType);
+    public ResponseEntity<?> getSensorsByType(SensorType sensorType) {
+        return ResponseEntity.ok(sensorRepository.findBySensorType(sensorType));
     }
 
     // Save data of a specific sensor
     @Override
-    public SensorDataDTO saveDataOfSensor(Long sensorId, SensorDataDTO sensorDataDto) {
-        Sensor sensor = sensorRepository.findById(sensorId).orElseThrow(
-          () -> new ResponseStatusException(
-            HttpStatus.NOT_FOUND,
-            "Sensor not found"
-          )
-        );
+    public ResponseEntity<?> saveDataOfSensor(Long sensorId, SensorDataDTO sensorDataDto) {
+        Sensor sensor = sensorById(sensorId);
 
         influxDBRepository.saveData(sensor.getLocation(), sensorDataDto.getValue(), sensor.getSensorType());
-        return sensorDataDto;
+        return ResponseEntity.ok(sensorDataDto);
     }
 
     // Get data of a specific location
     @Override
-    public List<FluxTable> getDataByLocation(String location) {
-        return influxDBRepository.getDataByLocation(location);
+    public ResponseEntity<?> getDataByLocation(String location) {
+        return ResponseEntity.ok(influxDBRepository.getDataByLocation(location));
     }
 
     // Delete a sensor by id
     @Override
-    public Sensor deleteSensorById(Long id) {
-        Sensor sensor = sensorRepository.findById(id).orElseThrow(() ->
-          new ResponseStatusException(
-            HttpStatus.NOT_FOUND,
-            "Sensor not found"
-          )
-        );
+    public ResponseEntity<?> deleteSensorById(Long id) {
 
-        sensorRepository.deleteById(id);
-        return sensor;
+        try {
+            sensorRepository.deleteById(id);
+            return ResponseEntity.ok("Sensor deleted successfully");
+        } catch (Exception e) {
+            return Response.newResponse("Error deleting sensor, try again later", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

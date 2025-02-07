@@ -105,22 +105,24 @@ public class UserServiceImpl implements UserService {
     try {
       this.userRepository.save(newUser);
 
-      // Create the token
-      Authentication authDTO = new UsernamePasswordAuthenticationToken(newUser.getUsername(), newUser.getPassword());
+//      // Create the token
+//      Authentication authDTO = new UsernamePasswordAuthenticationToken(newUser.getUsername(), newUser.getPassword());
+//
+//      //Este método es el que llama al AuthenticationManager correspondiente para ver si la autenticación es correcta
+//      Authentication authentication = this.authManager.authenticate(authDTO);
+//
+//      //El método nos devuelve un User (con UserDetailService) para con esos datos generar el token
+//      User user = (User) authentication.getPrincipal();
+//
+//      String token = this.jwtUtil.generateToken(authentication);
 
-      //Este método es el que llama al AuthenticationManager correspondiente para ver si la autenticación es correcta
-      Authentication authentication = this.authManager.authenticate(authDTO);
+      return Response.newResponse("User created successfully", HttpStatus.OK);
 
-      //El método nos devuelve un User (con UserDetailService) para con esos datos generar el token
-      User user = (User) authentication.getPrincipal();
-
-      String token = this.jwtUtil.generateToken(authentication);
     } catch (OptimisticLockingFailureException e) {
       return Response.newResponse("User already exists", HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
+      System.out.println(e.getMessage());
       return Response.newResponse("Error saving user, try again later", HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-    return Response.newResponse("Error saving user, try again later", HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }

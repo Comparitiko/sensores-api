@@ -4,7 +4,9 @@ import com.jaroso.proyecto.apisensores.dto.PlantationDTO;
 import com.jaroso.proyecto.apisensores.entities.Plantation;
 import com.jaroso.proyecto.apisensores.repositories.PlantationRepository;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +43,14 @@ public class PlantationServiceImpl implements PlantationService {
     @Override
     public Plantation savePlantation(PlantationDTO plantationDTO) {
 
+        Plantation checkPlantation = plantationRepository.findByCoordinates(plantationDTO.getCoordinates()).orElse(null);
+        if(checkPlantation != null){
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Plantation already exists."
+            );
+        }
+
         Plantation plantation = new Plantation();
         plantation.setName(plantationDTO.getName());
         plantation.setUbication(plantationDTO.getName());
@@ -55,6 +65,7 @@ public class PlantationServiceImpl implements PlantationService {
 
     @Override
     public void deletePlantation(Long id) {
+
         plantationRepository.deleteById(id);
 
     }

@@ -2,10 +2,14 @@ package com.jaroso.proyecto.apisensores.entities;
 
 import com.jaroso.proyecto.apisensores.enums.UserAuthority;
 import jakarta.persistence.*;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -16,6 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class User implements UserDetails {
 
     @Id
@@ -35,6 +40,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private List<UserAuthority> authorities = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Plantation> plantaciones = new ArrayList<>();
+
     //------Constructor------
     public User(String username, String password, String email, List<UserAuthority> authorities) {
         this.username = username;
@@ -47,7 +55,9 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return this.authorities.stream()
+                .map(authority -> new SimpleGrantedAuthority(authority.toString()))
+                .toList();
     }
 
     @Override

@@ -56,7 +56,6 @@ public class SensorController {
   // Save data for a specific sensor
   @PostMapping("/data/{id}")
   public ResponseEntity<?> saveData(@PathVariable Long id, @RequestBody SensorDataDTO sensorDataDto) {
-    System.out.println("asd");
     return sensorService.saveDataOfSensor(id, sensorDataDto);
   }
 
@@ -68,7 +67,6 @@ public class SensorController {
 
   @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteSensor(@PathVariable Long id) {
-    sensorService.deleteSensorById(id);
-    return ResponseEntity.ok("Sensor deleted successfully");
+    return sensorService.deleteSensorById(id);
   }
 }

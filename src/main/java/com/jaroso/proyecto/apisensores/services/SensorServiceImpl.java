@@ -54,6 +54,7 @@ public class SensorServiceImpl implements SensorService {
             );
         }
 
+
         Sensor sensorToSave = new Sensor(
             sensor.getSensorType(),
             sensor.getLocation(),
@@ -140,7 +141,7 @@ public class SensorServiceImpl implements SensorService {
 
         try {
             sensorRepository.deleteById(id);
-            return ResponseEntity.ok("Sensor deleted successfully");
+            return Response.newResponse("Sensor deleted successfully", HttpStatus.OK);
         } catch (Exception e) {
             return Response.newResponse("Error deleting sensor, try again later", HttpStatus.INTERNAL_SERVER_ERROR);
         }

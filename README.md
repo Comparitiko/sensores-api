@@ -7,3 +7,6 @@
 ## Cosas que añadir
 
 - Autenticación de usuarios.
+
+## Comando para crear el Jar
+- ./gradelw.bat build

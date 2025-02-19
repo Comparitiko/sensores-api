@@ -24,6 +24,7 @@ services:
       - MARIADB_USER=${MARIADB_USER}
       - MARIADB_PASSWORD=${MARIADB_PASSWORD}
       - JWT_SECRET=${JWT_SECRET}
+      - ALLOWED_ORIGIN=${ALLOWED_ORIGIN}
     ports:
       - "9091:${APP_PORT}"
     networks:

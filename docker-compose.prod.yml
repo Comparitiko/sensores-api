@@ -1,0 +1,65 @@
+services:
+  api-sensores:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: api-sensores
+#    env_file:
+#      - .env
+    environment:
+      - APP_PORT=${APP_PORT}
+      - INFLUXDB_PORT=${INFLUXDB_PORT}
+      - INFLUXDB_DB=${INFLUXDB_DB}
+      - INFLUXDB_ADMIN_USER=${INFLUXDB_ADMIN_USER}
+      - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_ADMIN_PASSWORD}
+      - INFLUXDB_HOST=${INFLUXDB_HOST}
+      - JWT_EXPIRATION=${JWT_EXPIRATION}
+      - INFLUXDB_ORG=${INFLUXDB_ORG}
+      - INFLUXDB_BUCKET=${INFLUXDB_BUCKET}
+      - INFLUXDB_TOKEN=${INFLUXDB_TOKEN}
+      - DB_HOST=${DB_HOST}
+      - MARIADB_PORT=${MARIADB_PORT}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+    ports:
+      - "9091:${APP_PORT}"
+    networks:
+      - api-sensores-network
+    depends_on:
+      - influxdb
+      - mariadb
+  influxdb:
+    container_name: influxdb
+    image: influxdb:1.11-alpine
+    ports:
+      - '${INFLUXDB_PORT:-8086}:8086'
+    volumes:
+      - influxdb-storage:/var/lib/influxdb
+    environment:
+      - INFLUXDB_DB=${INFLUXDB_DB}
+      - INFLUXDB_ADMIN_USER=${INFLUXDB_ADMIN_USER}
+      - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_ADMIN_PASSWORD}
+    networks:
+      - api-sensores-network
+  mariadb:
+    container_name: mariadb-sensores
+    image: mariadb:11.4.5-noble
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${MARIADB_DATABASE}
+      MARIADB_USER: ${MARIADB_USER}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+    ports:
+      - "${MARIADB_PORT:-3306}:3306"
+    volumes:
+      - ./mariadb:/var/lib/mysql
+    networks:
+      - api-sensores-network
+volumes:
+    influxdb-storage:
+networks:
+  api-sensores-network:

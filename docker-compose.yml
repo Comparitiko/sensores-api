@@ -1,7 +1,7 @@
 services:
   influxdb:
     container_name: influxdb
-    image: influxdb:latest
+    image: influxdb:1.11-alpine
     ports:
       - '${INFLUXDB_PORT:-8086}:8086'
     volumes:
@@ -12,7 +12,7 @@ services:
       - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_ADMIN_PASSWORD}
   db:
     container_name: mariadb-sensores
-    image: mariadb:latest
+    image: mariadb:11.4.5-noble
     restart: always
     environment:
       MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}

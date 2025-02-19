@@ -1,6 +1,8 @@
 target
 build
-.idea9
+.idea
+.gradle
 HELP.md
 README.md
+api_test
 mariadb

@@ -21,7 +21,7 @@ jobs:
         with:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-      - name: Build and push image to registry
+      - name: Build and push backend image to registry
         run: |
           docker buildx build --push \
             --target production \

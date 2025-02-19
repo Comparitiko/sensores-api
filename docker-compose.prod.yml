@@ -1,12 +1,7 @@
 services:
   api-sensores:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: production
+    image: comparitiko/api-sensores:latest
     container_name: api-sensores
-#    env_file:
-#      - .env
     environment:
       - APP_PORT=${APP_PORT}
       - INFLUXDB_PORT=${INFLUXDB_PORT}
@@ -61,6 +56,6 @@ services:
     networks:
       - api-sensores-network
 volumes:
-    influxdb-storage:
+  influxdb-storage:
 networks:
   api-sensores-network:

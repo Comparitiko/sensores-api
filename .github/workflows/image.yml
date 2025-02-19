@@ -27,4 +27,4 @@ jobs:
           docker buildx build --push \
             --target production \
             --tag ${{ secrets.REGISTRY }}/api-sensores:latest \
-            --platform linux/amd64,linux/arm64 .
+            --platform linux/amd64,linux/arm64 ./sensores-api

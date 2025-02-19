@@ -20,6 +20,7 @@ REQUIRED_VARS=(
 "JWT_SECRET"
 "SHOW_SQL"
 "HIBERNATE_DDL_AUTO"
+"ALLOWED_ORIGIN"
 )
 
 # Verificar que todas las variables obligatorias estén definidas

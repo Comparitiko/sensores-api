@@ -1,5 +1,6 @@
 package com.jaroso.proyecto.apisensores.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +26,9 @@ public class SecurityConfig {
     this.jwtFilter = jwtFilter;
   }
 
+  @Value("${app.cors.allowedOrigin}")
+  private String allowedOrigin;
+
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
@@ -47,7 +51,7 @@ public class SecurityConfig {
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration config = new CorsConfiguration();
-    config.setAllowedOrigins(List.of("http://localhost:5173")); // Permitir React en desarrollo
+    config.setAllowedOrigins(List.of(allowedOrigin)); // Permitir React en desarrollo
     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Métodos HTTP
     config.setAllowedHeaders(List.of("Authorization", "Content-Type")); // Headers permitidos
     config.setAllowCredentials(true); // Permitir cookies o tokens

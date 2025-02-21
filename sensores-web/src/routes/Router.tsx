@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
+import Login from "../pages/Login.tsx";
 import ProtectedRoutes from "./ProtectedRoutes";
-import Login from "../components/pages/Login.tsx";
 
 export default function Router() {
   // TODO: Do that with auth context
@@ -15,7 +15,7 @@ export default function Router() {
           <ProtectedRoutes callback={canAccessAuthRoutes} navigateTo="/" />
         }
       >
-        <Route path="login" element={<Login/>} />
+        <Route path="login" element={<Login />} />
         <Route path="register" element={<h1>Registro</h1>} />
       </Route>
       <Route

@@ -1,4 +1,4 @@
-// import { Plantation } from '../interfaces/Plantation';
+import { Plantation } from '../interfaces/Plantation';
 export interface User {
     id: string;
     username: string;

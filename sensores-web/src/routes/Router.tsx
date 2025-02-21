@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoutes from "./ProtectedRoutes";
-import Login from "../components/Login.tsx";
+import Login from "../components/pages/Login.tsx";
 
 export default function Router() {
   // TODO: Do that with auth context

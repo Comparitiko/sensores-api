@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useState } from "react";
-import { Plantation, PlantationContextType, Sensor } from "../interfaces/plantation";
+import { Plantation, PlantationContextType, Sensor } from "../interfaces/Plantation";
 
 const PlantationContext = createContext<PlantationContextType | undefined>(undefined);
 

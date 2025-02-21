@@ -1,12 +1,14 @@
 import { Navigate, Outlet } from "react-router-dom";
 
-const ProtectedRoutes = () => {
-  // TODO - check if the user is logged in with the context
-  const isLoggedIn = false;
+interface ProtectedRoutesProps {
+  callback: () => boolean;
+  navigateTo: string;
+}
 
+const ProtectedRoutes = ({ callback, navigateTo }: ProtectedRoutesProps) => {
   // Check if user is logged in
-  if (!isLoggedIn) {
-    return <Navigate to="/login" />;
+  if (!callback()) {
+    return <Navigate to={navigateTo} />;
   }
 
   return <Outlet />;

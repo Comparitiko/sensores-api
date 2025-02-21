@@ -3,6 +3,7 @@ import ProtectedRoutes from "./ProtectedRoutes";
 
 export default function Router() {
   // TODO: Do that with auth context
+
   const canAccessAuthRoutes = () => true;
   const canAccessPrivateRoutes = () => false;
 

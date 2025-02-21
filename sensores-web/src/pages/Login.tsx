@@ -1,17 +1,38 @@
-import { ChangeEvent, FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import {ChangeEvent, FormEvent, useContext, useState} from "react";
+import {Link} from "react-router-dom";
 import Atsing from "../components/icons/Atsing";
 import Lock from "../components/icons/Lock";
 import RigthArrow from "../components/icons/RigthArrow";
 import UserSVG from "../components/icons/UserSVG";
 import InputText from "../components/inputs/InputText";
 import Label from "../components/inputs/Label";
+import {UserContext} from "../contexts/UserContext.tsx";
 
 export default function Login() {
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+  const [error, setError] = useState("");
+  const { login } = useContext(UserContext);
+
+  const url = import.meta.env.VITE_API_URL;
+
+  const fetchAPI = async (form) => {
+    const response = await fetch(`${url}/auth/login`, {
+      method: "POST",
+      body: JSON.stringify({
+          username: form.email,
+          password: form.password,
+        }),
+    });
+    if (response.ok){
+      return await response.json();
+    } else {
+      setError("Usuario o contraseña incorrectos");
+      return error;
+    }
+  }
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.id === "email") {
@@ -21,9 +42,17 @@ export default function Login() {
     }
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!form.email || !form.password) return;
+    console.log(url)
+    const response = await fetchAPI(form);
+    if (response.ok) {
+      login({
+        username: response.username,
+        token: response.token,
+      })
+    }
   };
 
   return (
@@ -41,10 +70,11 @@ export default function Login() {
                   <Atsing />
                 </div>
                 <InputText
-                  id="email"
-                  type="email"
-                  placeholder="Dirección E-Mail"
-                  onChange={() => handleInput}
+                    value={form.email}
+                    id="email"
+                    type="text"
+                    placeholder="Dirección E-Mail"
+                    onChange={handleInput}
                 />
               </div>
             </div>
@@ -57,10 +87,11 @@ export default function Login() {
                   </span>
                 </div>
                 <InputText
-                  id={"password"}
-                  type="password"
-                  placeholder="Contraseña"
-                  onChange={() => handleInput}
+                    value={form.password}
+                    id={"password"}
+                    type="password"
+                    placeholder="Contraseña"
+                    onChange={handleInput}
                 />
               </div>
             </div>

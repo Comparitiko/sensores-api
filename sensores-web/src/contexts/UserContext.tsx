@@ -1,5 +1,6 @@
 import React, { createContext, useState, ReactNode } from 'react';
 import { User } from '../interfaces/User';
+import {Navigate, useNavigate} from "react-router-dom";
 
 // Define the context type
 interface UserContextType {
@@ -31,6 +32,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
     setUser(userData);
     setIsLoggedIn(true);
+
+    return <Navigate to={"/"}/>
   };
 
   // Logout
@@ -38,6 +41,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
     sessionStorage.removeItem('user');
     setUser(null);
     setIsLoggedIn(false);
+
+    return <Navigate to={"/auth/login"}/>
   }
 
 

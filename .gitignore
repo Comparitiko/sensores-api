@@ -37,3 +37,6 @@ nbdist/
 .vscode/
 mariadb
 .env
+bun.lock
+package-lock.json
+pnpm-lock.yml

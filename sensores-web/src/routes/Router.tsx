@@ -16,7 +16,7 @@ export default function Router() {
         }
       >
         <Route path="login" element={<Login/>} />
-        <Route path="registro" element={<h1>Registro</h1>} />
+        <Route path="register" element={<h1>Registro</h1>} />
       </Route>
       <Route
         path="/"

@@ -2,7 +2,7 @@ interface AtsingProps {
     className?: string;
 }
 
-export default function Atsing({className="h-6 w-6"}: Atsing){
+export default function Atsing({className="h-6 w-6"}: AtsingProps){
 
     return (
         <svg className={className} fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

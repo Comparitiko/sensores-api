@@ -37,7 +37,11 @@ public class InfluxDBRepository {
                 .addField("value", value)
                 .time(Instant.now(), WritePrecision.MS);
 
-        writeApi.writePoint(bucket, org, point);
+        try {
+            writeApi.writePoint(bucket, org, point);
+        } catch (Exception e) {
+            throw new RuntimeException("Error while saving data");
+        }
     }
 
     // Método para leer datos desde InfluxDB

@@ -135,7 +135,8 @@ public class SensorServiceImpl implements SensorService {
             return Response.newResponse("Sensor not found", HttpStatus.NOT_FOUND);
         }
 
-        influxDBRepository.saveData(sensor.get().getLocation(), sensorDataDto.getValue(), sensor.get().getSensorType());
+        influxDBRepository.saveData(sensor.get().getLocation(), sensorDataDto.getValue(),
+          sensor.get().getSensorType());
 
         return ResponseEntity.ok(sensorDataDto);
     }

@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Login from "../pages/Login.tsx";
+import Register from "../pages/Register.tsx";
 import ProtectedRoutes from "./ProtectedRoutes";
 
 export default function Router() {
@@ -16,7 +17,7 @@ export default function Router() {
         }
       >
         <Route path="login" element={<Login />} />
-        <Route path="register" element={<h1>Registro</h1>} />
+        <Route path="register" element={<Register />} />
       </Route>
       <Route
         path="/"

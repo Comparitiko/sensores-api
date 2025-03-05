@@ -21,4 +21,5 @@ public interface SensorService {
   ResponseEntity<?> saveDataOfSensor(Long sensorId, SensorDataDTO sensorDataDto);
   ResponseEntity<?> getDataByLocation(String location);
   ResponseEntity<?> deleteSensorById(Long id);
+  ResponseEntity<?> getSensorByPlantation(Long plantation_id);
 }

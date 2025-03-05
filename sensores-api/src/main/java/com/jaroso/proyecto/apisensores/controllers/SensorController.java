@@ -37,8 +37,13 @@ public class SensorController {
   // Get a sensor by id
   @GetMapping("/{id}")
   public ResponseEntity<?> getSensorById(@PathVariable Long id) {
-    System.out.println("asd");
     return sensorService.getSensorById(id);
+  }
+
+  // Get all sensors of a specific plantation
+  @GetMapping("/plantation/{plantation_id}")
+  public ResponseEntity<?> getSensorByPlantation(@PathVariable Long plantation_id) {
+    return sensorService.getSensorByPlantation(plantation_id);
   }
 
   // Get all data for a specific sensor

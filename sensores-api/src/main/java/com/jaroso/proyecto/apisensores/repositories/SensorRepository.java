@@ -17,13 +17,4 @@ public interface SensorRepository extends JpaRepository<Sensor, Long> {
 
     Optional<Sensor> findSensorByLocation(String location);
 
-    List<Sensor> findByPlantation(Plantation plantation);
-
-    List<Sensor> findByPlantationAndSensorType(Plantation plantation, SensorType sensorType);
-
-    List<Sensor> findByPlantationAndLocation(Plantation plantation, String location);
-
-    List<Sensor> findByUnit(Unit unit);
-
-    List<Sensor> findByCreatedAtBetween(LocalDateTime startDate, LocalDateTime endDate);
 }

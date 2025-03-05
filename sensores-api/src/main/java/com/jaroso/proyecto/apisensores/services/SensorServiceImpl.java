@@ -115,6 +115,17 @@ public class SensorServiceImpl implements SensorService {
         return ResponseEntity.ok(sensorRepository.findBySensorType(sensorType));
     }
 
+    // Get all sensors of a specific plantation
+    @Override
+    public ResponseEntity<?> getSensorByPlantation(Long plantation_id) {
+        Optional<Plantation> plantation = plantationRepository.findById(plantation_id);
+        if (plantation.isEmpty()) {
+            return Response.newResponse("Plantation not found", HttpStatus.NOT_FOUND);
+        }
+
+        return ResponseEntity.ok(plantation.get().getSensors());
+    }
+
     // Save data of a specific sensor
     @Override
     public ResponseEntity<?> saveDataOfSensor(Long sensorId, SensorDataDTO sensorDataDto) {
@@ -146,4 +157,5 @@ public class SensorServiceImpl implements SensorService {
             return Response.newResponse("Error deleting sensor, try again later", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }

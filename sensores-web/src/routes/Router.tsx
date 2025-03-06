@@ -31,6 +31,7 @@ export default function Router() {
         <Route index element={<h1>Home</h1>} />
         <Route path="plantaciones" element={<h1>Plantaciones</h1>} />
         <Route path="plantaciones/:id" element={<h1>Plantaciones ID</h1>} />
+        <Route path="plantaciones/:id/sensor/:sensor_id" />
       </Route>
       <Route path="*" element={<h1>404</h1>} />
     </Routes>

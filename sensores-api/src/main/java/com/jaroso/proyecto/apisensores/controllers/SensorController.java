@@ -42,8 +42,8 @@ public class SensorController {
 
   // Get all sensors of a specific plantation
   @GetMapping("/plantation/{plantation_id}")
-  public ResponseEntity<?> getSensorByPlantation(@PathVariable Long plantation_id) {
-    return sensorService.getSensorByPlantation(plantation_id);
+  public ResponseEntity<?> getSensorsByPlantation(@PathVariable Long plantation_id) {
+    return sensorService.getSensorsByPlantation(plantation_id);
   }
 
   // Get all data for a specific sensor
@@ -65,9 +65,9 @@ public class SensorController {
   }
 
   // Get data of a specific location
-  @GetMapping("/data/{location}")
-  public ResponseEntity<?> getDataByLocation(@PathVariable String location) {
-    return ResponseEntity.ok(sensorService.getDataByLocation(location));
+  @GetMapping("/data/{id}")
+  public ResponseEntity<?> getDataByLocation(@PathVariable Long id) {
+    return this.sensorService.getDataBySensorId(id);
   }
 
   @DeleteMapping("/{id}")

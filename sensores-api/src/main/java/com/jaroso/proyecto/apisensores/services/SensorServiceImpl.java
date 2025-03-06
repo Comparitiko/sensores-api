@@ -117,10 +117,11 @@ public class SensorServiceImpl implements SensorService {
 
     // Get all sensors of a specific plantation
     @Override
-    public ResponseEntity<?> getSensorByPlantation(Long plantation_id) {
+    public ResponseEntity<?> getSensorsByPlantation(Long plantation_id) {
         Optional<Plantation> plantation = plantationRepository.findById(plantation_id);
+
         if (plantation.isEmpty()) {
-            return Response.newResponse("Plantation not found", HttpStatus.NOT_FOUND);
+            return Response.newResponse("Plantation does not exists", HttpStatus.NOT_FOUND);
         }
 
         return ResponseEntity.ok(plantation.get().getSensors());
@@ -143,8 +144,14 @@ public class SensorServiceImpl implements SensorService {
 
     // Get data of a specific location
     @Override
-    public ResponseEntity<?> getDataByLocation(String location) {
-        return ResponseEntity.ok(influxDBRepository.getDataByLocation(location));
+    public ResponseEntity<?> getDataBySensorId(Long id) {
+        Optional<Sensor> sensor =  this.sensorRepository.findById(id);
+
+        if (sensor.isEmpty()) {
+            return Response.newResponse("Sensor does not exist", HttpStatus.NOT_FOUND);
+        }
+
+        return ResponseEntity.ok(influxDBRepository.getDataByLocation(sensor.get().getLocation()));
     }
 
     // Delete a sensor by id

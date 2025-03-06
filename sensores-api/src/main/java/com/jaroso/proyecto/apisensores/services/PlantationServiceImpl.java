@@ -22,12 +22,10 @@ import java.util.Optional;
 public class PlantationServiceImpl implements PlantationService {
 
     private final PlantationRepository plantationRepository;
-    private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
 
     public PlantationServiceImpl(PlantationRepository plantationRepository, JwtUtil jwtUtil, UserRepository userRepository) {
         this.plantationRepository = plantationRepository;
-        this.jwtUtil = jwtUtil;
         this.userRepository = userRepository;
     }
 

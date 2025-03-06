@@ -19,7 +19,7 @@ public interface SensorService {
   ResponseEntity<?> getDataBySensor(Long id);
   ResponseEntity<?> getSensorsByType(SensorType sensorType);
   ResponseEntity<?> saveDataOfSensor(Long sensorId, SensorDataDTO sensorDataDto);
-  ResponseEntity<?> getDataByLocation(String location);
+  ResponseEntity<?> getDataBySensorId(Long id);
   ResponseEntity<?> deleteSensorById(Long id);
-  ResponseEntity<?> getSensorByPlantation(Long plantation_id);
+  ResponseEntity<?> getSensorsByPlantation(Long plantation_id);
 }

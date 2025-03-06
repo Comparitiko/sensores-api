@@ -60,8 +60,8 @@ public class SensorController {
 
   // Save data for a specific sensor
   @PostMapping("/data/{id}")
-  public ResponseEntity<?> saveData(@PathVariable Long id, @RequestBody SensorDataDTO sensorDataDto) {
-    return sensorService.saveDataOfSensor(id, sensorDataDto);
+  public ResponseEntity<?> saveData(@RequestBody SensorDataDTO sensorDataDto) {
+    return sensorService.saveDataOfSensor(sensorDataDto);
   }
 
   // Get data of a specific location

@@ -129,8 +129,8 @@ public class SensorServiceImpl implements SensorService {
 
     // Save data of a specific sensor
     @Override
-    public ResponseEntity<?> saveDataOfSensor(Long sensorId, SensorDataDTO sensorDataDto) {
-        Optional<Sensor> sensor = sensorById(sensorId);
+    public ResponseEntity<?> saveDataOfSensor(SensorDataDTO sensorDataDto) {
+        Optional<Sensor> sensor = sensorById(sensorDataDto.getSensorId());
 
         if (sensor.isEmpty()) {
             return Response.newResponse("Sensor not found", HttpStatus.NOT_FOUND);

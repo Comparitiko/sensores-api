@@ -1,12 +1,13 @@
-import {ChangeEvent, FormEvent, useContext, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import { ChangeEvent, FormEvent, useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Lock from "../components/icons/Lock";
 import RigthArrow from "../components/icons/RigthArrow";
 import UserSVG from "../components/icons/UserSVG";
 import InputText from "../components/inputs/InputText";
 import Label from "../components/inputs/Label";
-import {UserContext} from "../contexts/UserContext.tsx";
-import {User} from "../interfaces/User.tsx";
+import { CONSTS } from "../consts.ts";
+import { UserContext } from "../contexts/UserContext.tsx";
+import { User } from "../interfaces/User.tsx";
 
 export default function Login() {
   const [form, setForm] = useState({
@@ -16,7 +17,6 @@ export default function Login() {
 
   const navigate = useNavigate();
 
-  const url = "https://sensores.comparitiko.dev/api";
   const userContext = useContext(UserContext);
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +33,7 @@ export default function Login() {
 
     // Aquí se debe enviar la petición a la API para validar el usuario
     // y obtener el token
-    const response = await fetch(url + "/auth/login", {
+    const response = await fetch(CONSTS.API_URL + "/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,19 +43,20 @@ export default function Login() {
         ...form,
       }),
     });
-    console.log(JSON.stringify({
-      //Aquí cogemos las variables que tenemos arriba
-      ...form,
-    }),);
+    console.log(
+      JSON.stringify({
+        //Aquí cogemos las variables que tenemos arriba
+        ...form,
+      })
+    );
     // Luego se debe almacenar el token en localStorage
     if (response.ok) {
-      const data = await response.json() as User;
+      const data = (await response.json()) as User;
       userContext?.login(data);
 
       //Redirigimos al usuario a la página de inicio
       navigate("/");
     }
-
   };
 
   return (
@@ -70,14 +71,14 @@ export default function Login() {
               <Label id={"username"}>Nombre de usuario:</Label>
               <div className="relative">
                 <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                  <UserSVG/>
+                  <UserSVG />
                 </div>
                 <InputText
-                    value={form.username}
-                    id="username"
-                    type="text"
-                    placeholder="Nombre de usuario"
-                    onChange={ handleInput }
+                  value={form.username}
+                  id="username"
+                  type="text"
+                  placeholder="Nombre de usuario"
+                  onChange={handleInput}
                 />
               </div>
             </div>
@@ -90,11 +91,11 @@ export default function Login() {
                   </span>
                 </div>
                 <InputText
-                    value={form.password}
-                    id={"password"}
-                    type="password"
-                    placeholder="Contraseña"
-                    onChange={ handleInput }
+                  value={form.password}
+                  id={"password"}
+                  type="password"
+                  placeholder="Contraseña"
+                  onChange={handleInput}
                 />
               </div>
             </div>

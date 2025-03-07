@@ -48,7 +48,7 @@ public class InfluxDBRepository {
     public List<FluxTable> getDataByLocation(String location) {
         //Modificar el rango de tiempo si es necesario
         String query = String.format(
-                "from(bucket: \"%s\") |> range(start: -1h) |> filter(fn: (r) => r[\"location\"] == \"%s\")",
+                "from(bucket: \"%s\") |> range(start: -30d) |> filter(fn: (r) => r[\"location\"] == \"%s\")",
                 bucket, location);
 
         return influxDBClient.getQueryApi().query(query, org);

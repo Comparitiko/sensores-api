@@ -18,7 +18,7 @@ REQUIRED_VARS=(
 "MARIADB_USER"
 "MARIADB_PASSWORD"
 "JWT_SECRET"
-"ALLOWED_ORIGIN"
+"ALLOWED_ORIGINS"
 )
 
 # Verificar que todas las variables obligatorias estén definidas

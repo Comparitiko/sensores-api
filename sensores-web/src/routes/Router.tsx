@@ -2,13 +2,17 @@ import { Route, Routes } from "react-router-dom";
 import Login from "../pages/Login.tsx";
 import Register from "../pages/Register.tsx";
 import ProtectedRoutes from "./ProtectedRoutes";
+import {useContext} from "react";
+import {UserContext} from "../contexts/UserContext.tsx";
 
 export default function Router() {
-  // TODO: Do that with auth context
-  const canAccessAuthRoutes = () => true;
-  const canAccessPrivateRoutes = () => false;
 
-  return (
+  const userContext = useContext(UserContext);
+  const canAccessAuthRoutes = () => !userContext!.isLoggedIn;
+  const canAccessPrivateRoutes = () => userContext!.isLoggedIn;
+
+
+    return (
     <Routes>
       <Route
         path="/auth"

@@ -26,8 +26,8 @@ public class SecurityConfig {
     this.jwtFilter = jwtFilter;
   }
 
-  @Value("${app.cors.allowedOrigin}")
-  private String allowedOrigin;
+  @Value("${app.cors.allowedOrigins}")
+  private String[] allowedOrigins;
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -51,7 +51,7 @@ public class SecurityConfig {
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration config = new CorsConfiguration();
-    config.setAllowedOrigins(List.of(allowedOrigin)); // Permitir React en desarrollo
+    config.setAllowedOrigins(List.of(allowedOrigins)); // Permitir React en desarrollo
     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Métodos HTTP
     config.setAllowedHeaders(List.of("Authorization", "Content-Type")); // Headers permitidos
     config.setAllowCredentials(true); // Permitir cookies o tokens

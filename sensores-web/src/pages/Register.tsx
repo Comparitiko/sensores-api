@@ -6,7 +6,7 @@ import RigthArrow from "../components/icons/RigthArrow";
 import UserSVG from "../components/icons/UserSVG";
 import InputText from "../components/inputs/InputText";
 import Label from "../components/inputs/Label";
-import TextError from "../components/textError";
+import TextError from "../components/TextError";
 import { CONSTS } from "../consts";
 import { UserContext } from "../contexts/UserContext";
 import { User } from "../interfaces/User";

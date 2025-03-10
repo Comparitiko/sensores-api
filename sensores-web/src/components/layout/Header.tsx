@@ -8,7 +8,7 @@ const Header = () => {
   return (
     <header className="bg-gray-900 text-white py-4 shadow-lg">
       <nav className="container mx-auto px-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex flex-col md:flex-row">
           {/* Logo o ícono con enlace */}
           <div className="flex items-center space-x-3">
             <a

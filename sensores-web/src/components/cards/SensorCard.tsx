@@ -14,11 +14,11 @@ interface SensorCardProps {
 export default function SensorCard({ sensor }: SensorCardProps) {
   return (
     <>
-      <div className="w-full max-w-md bg-white rounded-xl shadow-2xl overflow-hidden">
+      <article className="w-full max-w-md bg-white rounded-xl shadow-2xl overflow-hidden">
         {/* Barra de color dinámica según la unidad */}
         <div className={`h-2 ${getSensorCardColor(sensor.sensorType)}`}></div>
 
-        <div className="p-6 space-y-6">
+        <section className="p-6 space-y-6">
           {/* Encabezado con icono y tipo de sensor */}
           <div className="flex items-center space-x-3">
             <span className="text-4xl">
@@ -54,8 +54,8 @@ export default function SensorCard({ sensor }: SensorCardProps) {
               🔍 Ver detalles
             </Link>
           </div>
-        </div>
-      </div>
+        </section>
+      </article>
     </>
   );
 }

@@ -53,6 +53,7 @@ export default function Sensors() {
     getSensorsByPlantationId(abortController);
 
     // If component destroy the request will be cancelled
+    return (() => abortController.abort())
   }, []);
 
   if (isLoading) return <Loader />;

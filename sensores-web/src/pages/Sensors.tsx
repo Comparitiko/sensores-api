@@ -6,7 +6,7 @@ import { Plantation } from "../interfaces/Plantation";
 import Loader from "../components/Loader";
 import Layout from "../layouts/Layout";
 
-import TextError from "../components/textError";
+import TextError from "../components/TextError";
 
 // Lazy loading of the sensor card component
 const SensorCard = lazy(() => import("../components/cards/SensorCard"));

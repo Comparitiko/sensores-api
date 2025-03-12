@@ -2,64 +2,48 @@ import { AxisOptions, Chart } from "react-charts";
 import { Sensor } from "../../interfaces/Sensor";
 import { SensorData } from "../../interfaces/SensorData";
 import { useMemo } from "react";
-
-type DailyStars = {
-  date: Date;
-  stars: number;
-};
-
-type Series = {
-  label: string;
-  data: DailyStars[];
-};
+import {translateSensorCardType} from "../../utils/utils";
 
 interface ChartProps {
   sensor: Sensor;
   sensorData: SensorData[];
 }
 
-interface ChartData {
+interface ChartInfo {
   label: string;
-  data: SensorData;
+  data: ChartData[]
 }
 
+interface ChartData {
+  date: Date,
+  value: number
+}
+
+
 export default function SimpleChart({ sensor, sensorData }: ChartProps) {
-  const data: Series[] = [
+  const data: ChartInfo[] = [
     {
-      label: "React Charts",
-      data: [
-        {
-          date: new Date(),
-          stars: 202123,
-        },
-        // ...
-      ],
-    },
-    {
-      label: "React Query",
-      data: [
-        {
-          date: new Date(),
-          stars: 10234230,
-        },
-        // ...
-      ],
+      label: translateSensorCardType(sensorData[0].records[0].measurement),
+      data: sensorData[0].records.map(record => ({
+        date: new Date(record.time),
+        value: record.value
+      }))
     },
   ];
 
   console.log(sensor);
   console.log(sensorData);
   const primaryAxis = useMemo(
-    (): AxisOptions<DailyStars> => ({
+    (): AxisOptions<ChartData> => ({
       getValue: (datum) => datum.date,
     }),
     [],
   );
 
   const secondaryAxes = useMemo(
-    (): AxisOptions<DailyStars>[] => [
+    (): AxisOptions<ChartData>[] => [
       {
-        getValue: (datum) => datum.stars,
+        getValue: (datum) => datum.value,
       },
     ],
     [],
@@ -67,16 +51,17 @@ export default function SimpleChart({ sensor, sensorData }: ChartProps) {
 
   return (
     <>
-      <h1>Chart</h1>
-      <section className="w-full h-1/2">
-        <Chart
-          options={{
-            data,
-            primaryAxis,
-            secondaryAxes,
-          }}
-          className=""
-        />
+      <section className="min-w-sm max-w-7xl m-auto bg-white rounded-lg shadow-md p-4">
+        <h1 className="text-3xl font-bold mb-4 text-center">Datos del sensor de la zona {sensor.location}</h1>
+        <div className="min-h-72">
+          <Chart
+            options={{
+              data,
+              primaryAxis,
+              secondaryAxes,
+            }}
+          />
+        </div>
       </section>
     </>
   );

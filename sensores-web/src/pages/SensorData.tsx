@@ -8,6 +8,7 @@ import Loader from "../components/Loader";
 import { Sensor } from "../interfaces/Sensor";
 import TextError from "../components/TextError";
 import SimpleChart from "../components/chart/SimpleChart";
+import SensorDataTable from "../components/SensorDataTable.tsx";
 
 export default function SensorData() {
   const userContext = useContext(UserContext);
@@ -77,11 +78,16 @@ export default function SensorData() {
   return (
     <>
       <Layout>
-        <main className="min-h-screen">
+        <main className="min-h-screen bg-gradient-to-b from-blue-100 to-gray-100 py-10">
           {errors ? (
             <TextError error={errors} />
           ) : (
-            <SimpleChart sensor={sensorInfo} sensorData={sensorData} />
+            <>
+              <div className="mx-auto bg-white p-8 rounded-3xl shadow-2xl w-full max-w-3xl">
+                <SimpleChart sensor={sensorInfo} sensorData={sensorData} />
+                <SensorDataTable sensorData={sensorData} />
+              </div>
+            </>
           )}
         </main>
       </Layout>

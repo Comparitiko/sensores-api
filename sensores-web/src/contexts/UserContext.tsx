@@ -1,4 +1,4 @@
-import React, { createContext, useState, ReactNode } from 'react';
+import { createContext, useState, ReactNode } from 'react';
 import { User } from '../interfaces/User';
 
 // Define the context type
@@ -31,6 +31,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
     setUser(userData);
     setIsLoggedIn(true);
+
   };
 
   // Logout
@@ -38,6 +39,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     sessionStorage.removeItem('user');
     setUser(null);
     setIsLoggedIn(false);
+
   }
 
 

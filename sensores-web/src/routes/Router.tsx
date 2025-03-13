@@ -2,11 +2,16 @@ import { Route, Routes } from "react-router-dom";
 import Login from "../pages/Login.tsx";
 import Register from "../pages/Register.tsx";
 import ProtectedRoutes from "./ProtectedRoutes";
+import { useContext } from "react";
+import { UserContext } from "../contexts/UserContext.tsx";
+import Sensors from "../pages/Sensors.tsx";
+import SensorData from "../pages/SensorData.tsx";
+import Plantations from "../pages/Plantations.tsx";
 
 export default function Router() {
-  // TODO: Do that with auth context
-  const canAccessAuthRoutes = () => true;
-  const canAccessPrivateRoutes = () => false;
+  const userContext = useContext(UserContext);
+  const canAccessAuthRoutes = () => !userContext!.isLoggedIn;
+  const canAccessPrivateRoutes = () => userContext!.isLoggedIn;
 
   return (
     <Routes>
@@ -28,10 +33,9 @@ export default function Router() {
           />
         }
       >
-        <Route index element={<h1>Home</h1>} />
-        <Route path="plantaciones" element={<h1>Plantaciones</h1>} />
-        <Route path="plantaciones/:id" element={<h1>Plantaciones ID</h1>} />
-        <Route path="plantaciones/:id/sensor/:sensor_id" />
+        <Route index element={<Plantations />} />
+        <Route path="/plantations/:plantationId" element={<Sensors />} />
+        <Route path="/plantations/sensors/:sensorId" element={<SensorData />} />
       </Route>
       <Route path="*" element={<h1>404</h1>} />
     </Routes>

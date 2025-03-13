@@ -1,13 +1,21 @@
-import { ChangeEvent, FormEvent, useId, useState } from "react";
-import { Link } from "react-router-dom";
+import { ChangeEvent, FormEvent, useContext, useId, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Atsing from "../components/icons/Atsing";
 import Lock from "../components/icons/Lock";
 import RigthArrow from "../components/icons/RigthArrow";
 import UserSVG from "../components/icons/UserSVG";
 import InputText from "../components/inputs/InputText";
 import Label from "../components/inputs/Label";
+import TextError from "../components/TextError";
+import { CONSTS } from "../consts";
+import { UserContext } from "../contexts/UserContext";
+import { User } from "../interfaces/User";
 
 export default function Register() {
+  const userContext = useContext(UserContext);
+
+  const navigate = useNavigate();
+
   const inputsId = {
     username: useId(),
     email: useId(),
@@ -22,13 +30,56 @@ export default function Register() {
     confirmPassword: "",
   });
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     // Prevent the default form submission
     e.preventDefault();
 
-    // Validate the form data
+    if (
+      !userInfo.username ||
+      !userInfo.email ||
+      !userInfo.password ||
+      !userInfo.confirmPassword
+    ) {
+      setError("Todos los campos son obligatorios");
+      return;
+    }
+
+    setIsLoading(true);
 
     // Send the form data to the server for processing
+    const response = await fetch(`${CONSTS.API_URL}/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: userInfo.username,
+        email: userInfo.email,
+        password: userInfo.password,
+        confirm_password: userInfo.confirmPassword,
+      }),
+    });
+
+    if (!response.ok) {
+      if (response.status === 400) {
+        setError("El usuario ya existe");
+      } else {
+        setError("Error al registrarse, pruebe de nuevo mas tarde");
+      }
+
+      setIsLoading(false);
+
+      return;
+    }
+
+    const user = (await response.json()) as User;
+
+    setIsLoading(false);
+    userContext?.login(user);
+    navigate("/");
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -68,6 +119,7 @@ export default function Register() {
         </div>
         <div className="mt-10">
           <form method="post" onSubmit={handleSubmit}>
+            {error && <TextError error={error} />}
             <div className="flex flex-col mb-6">
               <Label id={inputsId.username}>Nombre de usuario</Label>
               <div className="relative">
@@ -138,10 +190,16 @@ export default function Register() {
                 type="submit"
                 className="flex items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-blue-600 hover:bg-blue-700 rounded py-2 w-full transition duration-150 ease-in"
               >
-                <span className="mr-2 uppercase">Registrarse</span>
-                <span>
-                  <RigthArrow />
-                </span>
+                {isLoading ? (
+                  <span className="mr-2 uppercase">Cargando</span>
+                ) : (
+                  <>
+                    <span className="mr-2 uppercase">Registrarse</span>
+                    <span>
+                      <RigthArrow />
+                    </span>
+                  </>
+                )}
               </button>
             </div>
           </form>

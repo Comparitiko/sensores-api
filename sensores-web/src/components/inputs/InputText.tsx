@@ -6,6 +6,7 @@ interface InputTextProps {
   placeholder: string;
   value?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  required?: boolean;
 }
 
 export default function InputText({
@@ -14,6 +15,7 @@ export default function InputText({
   placeholder,
   value = "",
   onChange,
+  required = false,
 }: InputTextProps) {
   return (
     <input
@@ -23,6 +25,7 @@ export default function InputText({
       placeholder={placeholder}
       value={value}
       onChange={onChange}
+      required={required}
     />
   );
 }

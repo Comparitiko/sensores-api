@@ -1,29 +1,57 @@
-import { ChangeEvent, FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
-import Atsing from "../components/icons/Atsing";
+import { ChangeEvent, FormEvent, useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Lock from "../components/icons/Lock";
 import RigthArrow from "../components/icons/RigthArrow";
 import UserSVG from "../components/icons/UserSVG";
 import InputText from "../components/inputs/InputText";
 import Label from "../components/inputs/Label";
+import { CONSTS } from "../consts.ts";
+import { UserContext } from "../contexts/UserContext.tsx";
+import { User } from "../interfaces/User.tsx";
 
 export default function Login() {
   const [form, setForm] = useState({
-    email: "",
+    username: "",
     password: "",
   });
 
+  const navigate = useNavigate();
+
+  const userContext = useContext(UserContext);
+
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.id === "email") {
-      setForm((prevState) => ({ ...prevState, email: e.target.value }));
+    if (e.target.id === "username") {
+      setForm((prevState) => ({ ...prevState, username: e.target.value }));
     } else {
       setForm((prevState) => ({ ...prevState, password: e.target.value }));
     }
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!form.email || !form.password) return;
+    if (!form.username || !form.password) return;
+
+    // Aquí se debe enviar la petición a la API para validar el usuario
+    // y obtener el token
+    const response = await fetch(CONSTS.API_URL + "/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        //Aquí cogemos las variables que tenemos arriba
+        ...form,
+      }),
+    });
+
+    // Luego se debe almacenar el token en localStorage
+    if (response.ok) {
+      const data = (await response.json()) as User;
+      userContext?.login(data);
+
+      //Redirigimos al usuario a la página de inicio
+      navigate("/");
+    }
   };
 
   return (
@@ -35,16 +63,17 @@ export default function Login() {
         <div className="mt-10">
           <form method={"post"} onSubmit={handleSubmit}>
             <div className="flex flex-col mb-6">
-              <Label id={"email"}>Dirección E-Mail:</Label>
+              <Label id={"username"}>Nombre de usuario:</Label>
               <div className="relative">
                 <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                  <Atsing />
+                  <UserSVG />
                 </div>
                 <InputText
-                  id="email"
-                  type="email"
-                  placeholder="Dirección E-Mail"
-                  onChange={() => handleInput}
+                  value={form.username}
+                  id="username"
+                  type="text"
+                  placeholder="Nombre de usuario"
+                  onChange={handleInput}
                 />
               </div>
             </div>
@@ -57,10 +86,11 @@ export default function Login() {
                   </span>
                 </div>
                 <InputText
+                  value={form.password}
                   id={"password"}
                   type="password"
                   placeholder="Contraseña"
-                  onChange={() => handleInput}
+                  onChange={handleInput}
                 />
               </div>
             </div>
@@ -68,7 +98,7 @@ export default function Login() {
             <div className="flex w-full">
               <button
                 type="submit"
-                className="flex items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-blue-600 hover:bg-blue-700 rounded py-2 w-full transition duration-150 ease-in"
+                className="cursor-pointer flex items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-blue-600 hover:bg-blue-700 rounded py-2 w-full transition duration-150 ease-in"
               >
                 <span className="mr-2 uppercase">Iniciar Sesión</span>
                 <span>

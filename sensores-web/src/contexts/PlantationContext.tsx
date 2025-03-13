@@ -1,10 +1,10 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { Plantation, PlantationContextType } from "../interfaces/Plantation";
 import { CONSTS } from "../consts";
+import { Plantation, PlantationContextType } from "../interfaces/Plantation";
 import { User } from "../interfaces/User";
 
 const PlantationContext = createContext<PlantationContextType | undefined>(
-  undefined,
+  undefined
 );
 
 interface ProviderProps {
@@ -42,7 +42,6 @@ const PlantationProvider = ({ children }: ProviderProps) => {
       const data: Plantation[] = await response.json();
       setPlantaciones(data); // Se actualiza el estado con los datos obtenidos
       setHasLoaded(true);
-      console.log(plantaciones);
     } catch (error) {
       console.error("Error obteniendo las plantaciones:", error);
       setHasError(true);
@@ -73,4 +72,4 @@ const getToken = () => {
   return token;
 };
 
-export { PlantationProvider, PlantationContext };
+export { PlantationContext, PlantationProvider };

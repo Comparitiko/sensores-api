@@ -1,14 +1,14 @@
-import { useParams } from "react-router-dom";
-import Layout from "../layouts/Layout";
 import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import Loader from "../components/Loader";
+import TextError from "../components/TextError";
+import SimpleChart from "../components/chart/SimpleChart.tsx";
+import SensorDataTable from "../components/tables/SensorDataTable.tsx";
 import { CONSTS } from "../consts";
 import { UserContext } from "../contexts/UserContext";
-import { SensorData as SensorDataInterface } from "../interfaces/SensorData";
-import Loader from "../components/Loader";
 import { Sensor } from "../interfaces/Sensor";
-import TextError from "../components/TextError";
-import SimpleChart from "../components/chart/SimpleChart";
-import SensorDataTable from "../components/tables/SensorDataTable.tsx";
+import { SensorData as SensorDataInterface } from "../interfaces/SensorData";
+import Layout from "../layouts/Layout";
 
 export default function SensorData() {
   const userContext = useContext(UserContext);
@@ -33,7 +33,7 @@ export default function SensorData() {
 
     if (!res.ok) {
       setErrors(
-        "No se pudieron recuperar los datos de los sensores, pruebe de nuevo mas tarde",
+        "No se pudieron recuperar los datos de los sensores, pruebe de nuevo mas tarde"
       );
       setIsLoading(false);
     }
@@ -54,7 +54,7 @@ export default function SensorData() {
 
     if (!res.ok) {
       setErrors(
-        "No se pudieron recuperar la información del sensor, pruebe de nuevo mas tarde",
+        "No se pudieron recuperar la información del sensor, pruebe de nuevo mas tarde"
       );
       setIsLoading(false);
     }

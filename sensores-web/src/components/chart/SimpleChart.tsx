@@ -1,7 +1,7 @@
+import { useMemo } from "react";
 import { AxisOptions, Chart } from "react-charts";
 import { Sensor } from "../../interfaces/Sensor";
 import { SensorData } from "../../interfaces/SensorData";
-import { useMemo } from "react";
 import { translateSensorCardType } from "../../utils/utils";
 
 interface ChartProps {
@@ -34,7 +34,7 @@ export default function SimpleChart({ sensor, sensorData }: ChartProps) {
     (): AxisOptions<ChartData> => ({
       getValue: (datum) => datum.date,
     }),
-    [],
+    []
   );
 
   const secondaryAxes = useMemo(
@@ -43,7 +43,7 @@ export default function SimpleChart({ sensor, sensorData }: ChartProps) {
         getValue: (datum) => datum.value,
       },
     ],
-    [],
+    []
   );
 
   return (

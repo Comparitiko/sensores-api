@@ -1,16 +1,19 @@
-import React from "react";
-import { Plantation } from "../../interfaces/Plantation";
+import { useContext } from "react";
+import { PlantationContext } from "../../contexts/PlantationContext";
+import { Link } from "react-router-dom";
 
-interface Props {
-  plantations: Plantation[];
-}
+const PlantationTable = () => {
+  const plantationContext = useContext(PlantationContext);
 
-const PlantationTable: React.FC<Props> = ({ plantations }) => {
+  const plantations = plantationContext?.plantaciones;
+
   return (
     <div className="p-10 bg-gradient-to-b from-blue-100 to-gray-100 min-h-screen">
       <div className="max-w-6xl mx-auto bg-white p-8 rounded-3xl shadow-2xl">
-        <h2 className="text-4xl font-bold mb-8 text-gray-800 text-center">🌿 Gestión de Plantaciones</h2>
-        
+        <h2 className="text-4xl font-bold mb-8 text-gray-800 text-center">
+          🌿 Gestión de Plantaciones
+        </h2>
+
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
             <thead>
@@ -26,22 +29,33 @@ const PlantationTable: React.FC<Props> = ({ plantations }) => {
               </tr>
             </thead>
             <tbody className="text-gray-700 text-sm">
-              {plantations.length > 0 ? (
+              {plantations && plantations.length > 0 ? (
                 plantations.map((plantation) => (
-                  <tr key={plantation.id} className="border-b border-gray-200 hover:bg-blue-50 transition-all">
+                  <tr
+                    key={plantation.id}
+                    className="border-b border-gray-200 hover:bg-blue-50 transition-all"
+                  >
                     <td className="py-4 px-6">{plantation.name}</td>
                     <td className="py-4 px-6">{plantation.ubication}</td>
                     <td className="py-4 px-6">{plantation.country}</td>
                     <td className="py-4 px-6">{plantation.province}</td>
                     <td className="py-4 px-6">{plantation.city}</td>
-                    <td className="py-4 px-6 text-blue-600">{plantation.coordinates}</td>
+                    <td className="py-4 px-6 text-blue-600">
+                      {plantation.coordinates}
+                    </td>
                     <td className="py-4 px-6">{plantation.plantationType}</td>
-                    <td className="py-4 px-6 text-center font-semibold text-green-600">{plantation.sensors.length} sensores</td>
+                    <td className="py-4 px-6 text-center font-semibold text-green-600">
+                      <Link to={`/plantations/${plantation.id}`}>
+                        Ver sensores
+                      </Link>
+                    </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={8} className="text-center py-6 text-gray-500">No hay plantaciones registradas.</td>
+                  <td colSpan={8} className="text-center py-6 text-gray-500">
+                    No hay plantaciones registradas.
+                  </td>
                 </tr>
               )}
             </tbody>

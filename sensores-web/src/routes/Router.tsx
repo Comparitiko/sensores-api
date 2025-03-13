@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext.tsx";
 import Sensors from "../pages/Sensors.tsx";
 import SensorData from "../pages/SensorData.tsx";
+import Plantations from "../pages/Plantations.tsx";
 
 export default function Router() {
   const userContext = useContext(UserContext);
@@ -32,7 +33,7 @@ export default function Router() {
           />
         }
       >
-        <Route index element={<h1>Plantaciones</h1>} />
+        <Route index element={<Plantations />} />
         <Route path="/plantations/:plantationId" element={<Sensors />} />
         <Route path="/plantations/sensors/:sensorId" element={<SensorData />} />
       </Route>

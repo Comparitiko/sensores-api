@@ -1,6 +1,7 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 import { Plantation, PlantationContextType } from "../interfaces/Plantation";
-import { Sensor } from "../interfaces/Sensor";
+import { CONSTS } from "../consts";
+import { User } from "../interfaces/User";
 
 const PlantationContext = createContext<PlantationContextType | undefined>(
   undefined,
@@ -12,18 +13,17 @@ interface ProviderProps {
 
 // Proveedor del contexto que envolverá la aplicación o los componentes necesarios
 const PlantationProvider = ({ children }: ProviderProps) => {
-  const HOST_URL = import.meta.env.VITE_HOST_URL; // URL base de la API obtenida desde las variables de entorno
+  const HOST_URL = CONSTS.API_URL; // URL base de la API obtenida desde las variables de entorno
 
   // Estados para manejar las plantaciones y sensores
   const [plantaciones, setPlantaciones] = useState<Plantation[]>([]);
-  const [sensors, setSensors] = useState<Sensor[]>([]);
   const [hasLoaded, setHasLoaded] = useState<boolean>(false); // Indica si los datos se han cargado
   const [hasError, setHasError] = useState<boolean>(false); // Indica si hubo un error en la carga
 
   // Función para obtener la lista de plantaciones desde la API
   const getPlantations = async () => {
-    const token = sessionStorage.getItem("token"); // Se obtiene el token almacenado en sessionStorage
-    if (!token) return; // Si no hay token, la función termina sin hacer la solicitud
+    const token = getToken(); // Se obtiene el token almacenado en sessionStorage
+    if (!token) throw new Error("No token"); // Si no hay token, la función termina sin hacer la solicitud
 
     try {
       setHasLoaded(false);
@@ -42,6 +42,7 @@ const PlantationProvider = ({ children }: ProviderProps) => {
       const data: Plantation[] = await response.json();
       setPlantaciones(data); // Se actualiza el estado con los datos obtenidos
       setHasLoaded(true);
+      console.log(plantaciones);
     } catch (error) {
       console.error("Error obteniendo las plantaciones:", error);
       setHasError(true);
@@ -49,46 +50,17 @@ const PlantationProvider = ({ children }: ProviderProps) => {
     }
   };
 
-  // Función para obtener los sensores de una plantación específica
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const getSensors = async (_id: number) => {
-    const token = sessionStorage.getItem("token");
-    if (!token) return;
-
-    try {
-      setHasLoaded(false);
-      setHasError(false);
-
-      const response = await fetch(`${HOST_URL}`, {
-        //TODO: No se si aquí hay que poner algo
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) throw new Error("Error en la respuesta");
-
-      const data: Sensor[] = await response.json();
-      setSensors(data);
-      setHasLoaded(true);
-    } catch (error) {
-      console.error("Error obteniendo los sensores:", error);
-      setHasError(true);
-      setHasLoaded(false);
-    }
-  };
+  useEffect(() => {
+    getPlantations();
+  }, []);
 
   return (
     <PlantationContext.Provider
       value={{
         plantaciones,
-        sensors,
         hasLoaded,
         hasError,
         getPlantations,
-        getSensors,
       }}
     >
       {children} {/* Proporciona el contexto a los componentes hijos */}
@@ -96,4 +68,9 @@ const PlantationProvider = ({ children }: ProviderProps) => {
   );
 };
 
-export { PlantationProvider };
+const getToken = () => {
+  const { token } = JSON.parse(sessionStorage.getItem("user") ?? "{}") as User;
+  return token;
+};
+
+export { PlantationProvider, PlantationContext };

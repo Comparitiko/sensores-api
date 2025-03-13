@@ -15,9 +15,7 @@ export interface Plantation {
 
 export interface PlantationContextType {
   plantaciones: Plantation[];
-  sensors: Sensor[];
   hasLoaded: boolean;
   hasError: boolean;
   getPlantations: () => Promise<void>;
-  getSensors: (id: number) => Promise<void>;
 }

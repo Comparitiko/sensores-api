@@ -1,5 +1,5 @@
-import {SensorData} from "../interfaces/SensorData.ts";
-import {formatDate} from "../utils/utils.ts";
+import {SensorData} from "../../interfaces/SensorData.ts";
+import {formatDate} from "../../utils/utils.ts";
 
 interface SensorDataTableProps {
   sensorData: SensorData[];

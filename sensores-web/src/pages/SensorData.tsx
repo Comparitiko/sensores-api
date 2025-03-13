@@ -8,7 +8,7 @@ import Loader from "../components/Loader";
 import { Sensor } from "../interfaces/Sensor";
 import TextError from "../components/TextError";
 import SimpleChart from "../components/chart/SimpleChart";
-import SensorDataTable from "../components/SensorDataTable.tsx";
+import SensorDataTable from "../components/tables/SensorDataTable.tsx";
 
 export default function SensorData() {
   const userContext = useContext(UserContext);
@@ -83,7 +83,7 @@ export default function SensorData() {
             <TextError error={errors} />
           ) : (
             <>
-              <div className="mx-auto bg-white p-8 rounded-3xl shadow-2xl w-full max-w-3xl">
+              <div className="mx-auto bg-white p-2 md:p-8 rounded-3xl shadow-2xl w-full max-w-3xl">
                 <SimpleChart sensor={sensorInfo} sensorData={sensorData} />
                 <SensorDataTable sensorData={sensorData} />
               </div>

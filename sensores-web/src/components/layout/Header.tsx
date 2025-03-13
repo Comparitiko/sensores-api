@@ -25,13 +25,15 @@ const Header = () => {
             <li>
               <Link
                 to="/"
-                className="flex items-center space-x-2 hover:underline hover:text-gray-300 transition duration-300"
-              ></Link>
+                className="flex items-center space-x-2 hover:underline hover:text-gray-300 transition hover:animate-pulse duration-300"
+              >
+                🌿 Plantaciones
+              </Link>
             </li>
             <li>
               <button
                 onClick={userContext?.logout}
-                className="flex items-center space-x-2 hover:underline hover:text-gray-300 transition duration-300 cursor-pointer"
+                className="flex items-center space-x-2 hover:underline hover:text-gray-300 transition hover:animate-pulse duration-300 cursor-pointer"
               >
                 <span>🚪</span>
                 <span>Cerrar sesión</span>

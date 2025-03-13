@@ -5,6 +5,7 @@ import ProtectedRoutes from "./ProtectedRoutes";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext.tsx";
 import Sensors from "../pages/Sensors.tsx";
+import SensorData from "../pages/SensorData.tsx";
 
 export default function Router() {
   const userContext = useContext(UserContext);
@@ -33,7 +34,7 @@ export default function Router() {
       >
         <Route index element={<h1>Plantaciones</h1>} />
         <Route path="/plantations/:plantationId" element={<Sensors />} />
-        <Route path="/plantations/sensors/:sensorId" />
+        <Route path="/plantations/sensors/:sensorId" element={<SensorData />} />
       </Route>
       <Route path="*" element={<h1>404</h1>} />
     </Routes>

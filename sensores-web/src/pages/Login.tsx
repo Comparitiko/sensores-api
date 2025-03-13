@@ -43,12 +43,7 @@ export default function Login() {
         ...form,
       }),
     });
-    console.log(
-      JSON.stringify({
-        //Aquí cogemos las variables que tenemos arriba
-        ...form,
-      })
-    );
+
     // Luego se debe almacenar el token en localStorage
     if (response.ok) {
       const data = (await response.json()) as User;
